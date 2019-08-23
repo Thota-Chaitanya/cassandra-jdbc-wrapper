@@ -30,7 +30,6 @@ public abstract class AbstractJdbcType<T> {
 
   public abstract boolean needsQuotes();
 
-  //public abstract String getString(ByteBuffer bytes);
   public abstract Class<T> getType();
 
   public abstract int getJdbcType();

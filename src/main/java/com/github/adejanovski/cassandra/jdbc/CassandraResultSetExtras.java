@@ -27,23 +27,23 @@ public interface CassandraResultSetExtras extends ResultSet {
   /**
    * @return the current row key
    */
-  public byte[] getKey() throws SQLException;
+  byte[] getKey() throws SQLException;
 
-  public BigInteger getBigInteger(int i) throws SQLException;
+  BigInteger getBigInteger(int i) throws SQLException;
 
-  public BigInteger getBigInteger(String name) throws SQLException;
+  BigInteger getBigInteger(String name) throws SQLException;
 
-  public List<?> getList(int index) throws SQLException;
+  List<?> getList(int index) throws SQLException;
 
-  public List<?> getList(String name) throws SQLException;
+  List<?> getList(String name) throws SQLException;
 
-  public Set<?> getSet(int index) throws SQLException;
+  Set<?> getSet(int index) throws SQLException;
 
-  public Set<?> getSet(String name) throws SQLException;
+  Set<?> getSet(String name) throws SQLException;
 
-  public Map<?, ?> getMap(int index) throws SQLException;
+  Map<?, ?> getMap(int index) throws SQLException;
 
-  public Map<?, ?> getMap(String name) throws SQLException;
+  Map<?, ?> getMap(String name) throws SQLException;
 
 
 }

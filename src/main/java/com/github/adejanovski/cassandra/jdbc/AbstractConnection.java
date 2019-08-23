@@ -56,7 +56,6 @@ abstract class AbstractConnection {
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 
-
   public CallableStatement prepareCall(String arg0) throws SQLException {
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }

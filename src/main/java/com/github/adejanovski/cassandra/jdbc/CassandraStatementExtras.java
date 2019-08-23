@@ -19,7 +19,7 @@ import java.sql.Statement;
 
 public interface CassandraStatementExtras extends Statement {
 
-  public void setConsistencyLevel(ConsistencyLevel consistencyLevel);
+  void setConsistencyLevel(ConsistencyLevel consistencyLevel);
 
-  public ConsistencyLevel getConsistencyLevel();
+  ConsistencyLevel getConsistencyLevel();
 }
