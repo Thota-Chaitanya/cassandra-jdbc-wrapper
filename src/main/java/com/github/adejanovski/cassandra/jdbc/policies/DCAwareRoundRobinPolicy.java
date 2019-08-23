@@ -12,21 +12,19 @@ public class DCAwareRoundRobinPolicy {
     }
 	
 	public DCAwareRoundRobinPolicy(String localDc, int usedHostsPerRemoteDc) {		
-        builder.withLocalDc(localDc)
-        	   .withUsedHostsPerRemoteDc(usedHostsPerRemoteDc);        
+        builder.withLocalDc(localDc).withUsedHostsPerRemoteDc(usedHostsPerRemoteDc);
                 
     }
 	
 	public DCAwareRoundRobinPolicy(String localDc, int usedHostsPerRemoteDc, boolean allowRemoteDCsForLocalConsistencyLevel) {		
-        builder.withLocalDc(localDc)
-               .withUsedHostsPerRemoteDc(usedHostsPerRemoteDc);
+        builder.withLocalDc(localDc).withUsedHostsPerRemoteDc(usedHostsPerRemoteDc);
         
         if(allowRemoteDCsForLocalConsistencyLevel){
         	builder.allowRemoteDCsForLocalConsistencyLevel();
         }
                 
     }
-	
+
 	public com.datastax.driver.core.policies.DCAwareRoundRobinPolicy build(){
 		return builder.build();
 	}

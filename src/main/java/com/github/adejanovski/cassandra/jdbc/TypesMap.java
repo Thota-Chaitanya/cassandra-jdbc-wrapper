@@ -39,6 +39,7 @@ public class TypesMap
         map.put("org.apache.cassandra.db.marshal.TimeUUIDType", JdbcTimeUUID.instance);
         map.put("org.apache.cassandra.db.marshal.UTF8Type", JdbcUTF8.instance);
         map.put("org.apache.cassandra.db.marshal.UUIDType", JdbcUUID.instance);
+        map.put("org.apache.cassandra.db.marshal.ShortType", JdbcShort.instance);
 
         // Cassandra 2.x types
         map.put("org.apache.cassandra.db.marshal.ascii",JdbcAscii.instance);
@@ -51,6 +52,7 @@ public class TypesMap
         map.put("org.apache.cassandra.db.marshal.float",JdbcFloat.instance);
         map.put("org.apache.cassandra.db.marshal.inet",JdbcInetAddress.instance);
         map.put("org.apache.cassandra.db.marshal.int",JdbcInt32.instance);
+        map.put("org.apache.cassandra.db.marshal.smallint",JdbcShort.instance);
         /*list
         map
         set*/

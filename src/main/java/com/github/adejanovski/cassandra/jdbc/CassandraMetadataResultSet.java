@@ -1042,6 +1042,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
 		            if (jtype instanceof JdbcAscii || jtype instanceof JdbcUTF8) length = Integer.MAX_VALUE;
 		            if (jtype instanceof JdbcUUID) length = 36;
 		            if (jtype instanceof JdbcInt32) length = 4;
+                if (jtype instanceof JdbcShort) length = 2;
 		            if (jtype instanceof JdbcLong) length = 8;
 	            	// String stringValue = getObject(column).toString();
 	            	//return (stringValue == null ? -1 : stringValue.length());
