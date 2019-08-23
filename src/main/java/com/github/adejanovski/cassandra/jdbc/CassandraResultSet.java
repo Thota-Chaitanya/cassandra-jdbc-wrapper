@@ -596,6 +596,8 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
         return (long) currentRow.getInt(index - 1);
       } else if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("varint")) {
         return currentRow.getVarint(index - 1).longValue();
+      } else if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("smallint")) {
+        return currentRow.getShort(index - 1);
       } else {
         return currentRow.getLong(index - 1);
       }
@@ -613,6 +615,8 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
         return (long) currentRow.getInt(name);
       } else if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("varint")) {
         return currentRow.getVarint(name).longValue();
+      } else if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("smallint")) {
+        return currentRow.getShort(name);
       } else {
         return currentRow.getLong(name);
       }
@@ -849,7 +853,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public short getShort(int index) throws SQLException {
     checkIndex(index);
-    return (short) currentRow.getInt(index - 1);
+    return currentRow.getShort(index - 1);
   }
 
   public Set<?> getSet(int index) throws SQLException {
@@ -877,7 +881,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public short getShort(String name) throws SQLException {
     checkName(name);
-    return (short) currentRow.getInt(name);
+    return currentRow.getShort(name);
   }
 
 
