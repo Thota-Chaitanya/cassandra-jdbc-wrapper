@@ -14,90 +14,76 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
+import com.datastax.driver.core.UDTValue;
 import java.sql.Types;
 
-import com.datastax.driver.core.UDTValue;
+
+public class JdbcUdt extends AbstractJdbcType<UDTValue> {
+
+  public static final JdbcUdt instance = new JdbcUdt();
+
+  JdbcUdt() {
+  }
+
+  public boolean isCaseSensitive() {
+    return true;
+  }
 
 
-public class JdbcUdt extends AbstractJdbcType<UDTValue>
-{    
-    public static final JdbcUdt instance = new JdbcUdt();
+  public boolean isCurrency() {
+    return false;
+  }
 
-    JdbcUdt() {}
+  public boolean isSigned() {
+    return false;
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return true;
-    }
+  public String toString(String obj) {
+    return obj;
+  }
 
-    
+  public boolean needsQuotes() {
+    return true;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public String getString(Object obj) {
+    return obj.toString();
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  }
 
-    public String toString(String obj)
-    {
-        return obj;
-    }
+  public Class<UDTValue> getType() {
+    return UDTValue.class;
+  }
 
-    public boolean needsQuotes()
-    {
-        return true;
-    }
+  public int getJdbcType() {
+    return Types.OTHER;
+  }
 
-    public String getString(Object obj)
-    {
-            return obj.toString();
-        
-    }
+  public UDTValue compose(Object obj) {
+    return (UDTValue) obj;
+  }
 
-    public Class<UDTValue> getType()
-    {
-        return UDTValue.class;
-    }
+  public Object decompose(UDTValue value) {
+    return value;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.OTHER;
-    }
+  @Override
+  public int getScale(UDTValue obj) {
+    // TODO Auto-generated method stub
+    return -1;
+  }
 
-    public UDTValue compose(Object obj)
-    {
-        return (UDTValue)obj;
-    }
+  @Override
+  public int getPrecision(UDTValue obj) {
+    // TODO Auto-generated method stub
+    return -1;
+  }
 
-    public Object decompose(UDTValue value)
-    {
-        return (Object) value;
-    }
+  @Override
+  public String toString(UDTValue obj) {
+    // TODO Auto-generated method stub
+    return obj.toString();
+  }
 
-	@Override
-	public int getScale(UDTValue obj) {
-		// TODO Auto-generated method stub
-		return -1;
-	}
 
-	@Override
-	public int getPrecision(UDTValue obj) {
-		// TODO Auto-generated method stub
-		return -1;
-	}
-
-	@Override
-	public String toString(UDTValue obj) {
-		// TODO Auto-generated method stub
-		return obj.toString();
-	}
-
-	
 }

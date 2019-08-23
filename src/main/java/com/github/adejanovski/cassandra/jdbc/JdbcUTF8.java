@@ -14,76 +14,63 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.sql.Types;
 
 
-public class JdbcUTF8 extends AbstractJdbcType<String>
-{
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
-    public static final JdbcUTF8 instance = new JdbcUTF8();
+public class JdbcUTF8 extends AbstractJdbcType<String> {
 
-    public JdbcUTF8() {}
+  public static final JdbcUTF8 instance = new JdbcUTF8();
+  private static final Charset UTF_8 = Charset.forName("UTF-8");
 
-    public boolean isCaseSensitive()
-    {
-        return true;
-    }
+  public JdbcUTF8() {
+  }
 
-    public int getScale(String obj)
-    {
-        return -1;
-    }
+  public boolean isCaseSensitive() {
+    return true;
+  }
 
-    public int getPrecision(String obj)
-    {
-        return -1;
-    }
+  public int getScale(String obj) {
+    return -1;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(String obj) {
+    return -1;
+  }
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(String obj)
-    {
-        return obj;
-    }
+  public boolean isSigned() {
+    return false;
+  }
 
-    public boolean needsQuotes()
-    {
-        return true;
-    }
+  public String toString(String obj) {
+    return obj;
+  }
 
-    public String getString(Object bytes)
-    {
-        return bytes.toString();       
-    }
+  public boolean needsQuotes() {
+    return true;
+  }
 
-    public Class<String> getType()
-    {
-        return String.class;
-    }
+  public String getString(Object bytes) {
+    return bytes.toString();
+  }
 
-    public int getJdbcType()
-    {
-        return Types.VARCHAR;
-    }
+  public Class<String> getType() {
+    return String.class;
+  }
 
-    public String compose(Object obj)
-    {
-        return getString(obj);
-    }
+  public int getJdbcType() {
+    return Types.VARCHAR;
+  }
 
-    public Object decompose(String value)
-    {
-        return (Object)value;
-    }
+  public String compose(Object obj) {
+    return getString(obj);
+  }
+
+  public Object decompose(String value) {
+    return value;
+  }
 }

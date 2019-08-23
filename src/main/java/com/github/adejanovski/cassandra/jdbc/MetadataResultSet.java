@@ -14,95 +14,92 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
+import com.datastax.driver.core.ColumnDefinitions;
+import com.datastax.driver.core.ExecutionInfo;
+import com.datastax.driver.core.Row;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.datastax.driver.core.ColumnDefinitions;
-import com.datastax.driver.core.ExecutionInfo;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.google.common.util.concurrent.ListenableFuture;
-
-public class MetadataResultSet{
-	
-	
-
-	private ArrayList<MetadataRow> rows;
-	
-	public MetadataResultSet(){
-		
-	}
-	
-	public MetadataResultSet setRows(ArrayList<MetadataRow> schemas){
-		this.rows = schemas;
-		return this;
-	}
-	
-
-	public ColumnDefinitions getColumnDefinitions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class MetadataResultSet {
 
 
-	public boolean isExhausted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+  private ArrayList<MetadataRow> rows;
+
+  public MetadataResultSet() {
+
+  }
+
+  public MetadataResultSet setRows(ArrayList<MetadataRow> schemas) {
+    this.rows = schemas;
+    return this;
+  }
 
 
-	public Row one() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public ColumnDefinitions getColumnDefinitions() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
-	public List<MetadataRow> all() {
-		// TODO Auto-generated method stub
-		return rows;
-	}
+  public boolean isExhausted() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 
-	public Iterator<MetadataRow> iterator() {
-		// TODO Auto-generated method stub
-		return rows.iterator();
-	}
+  public Row one() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
-	public int getAvailableWithoutFetching() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  public List<MetadataRow> all() {
+    // TODO Auto-generated method stub
+    return rows;
+  }
 
 
-	public boolean isFullyFetched() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+  public Iterator<MetadataRow> iterator() {
+    // TODO Auto-generated method stub
+    return rows.iterator();
+  }
 
 
-	public ListenableFuture<Void> fetchMoreResults() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public int getAvailableWithoutFetching() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 
 
-	public ExecutionInfo getExecutionInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public boolean isFullyFetched() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 
-	public List<ExecutionInfo> getAllExecutionInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public ListenableFuture<Void> fetchMoreResults() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
-	public boolean wasApplied() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+  public ExecutionInfo getExecutionInfo() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public List<ExecutionInfo> getAllExecutionInfo() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public boolean wasApplied() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 }

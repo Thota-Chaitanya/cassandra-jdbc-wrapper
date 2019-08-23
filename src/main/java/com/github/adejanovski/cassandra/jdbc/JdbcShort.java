@@ -17,67 +17,55 @@ package com.github.adejanovski.cassandra.jdbc;
 import java.sql.Types;
 
 
-public class JdbcShort extends AbstractJdbcType<Short>
-{
-    public static final JdbcShort instance = new JdbcShort();
+public class JdbcShort extends AbstractJdbcType<Short> {
 
-    JdbcShort()
-    {
-    }
+  public static final JdbcShort instance = new JdbcShort();
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  JdbcShort() {
+  }
 
-    public int getScale(Short obj)
-    {
-        return 0;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getPrecision(Short obj)
-    {
-        return obj.toString().length();
-    }
+  public int getScale(Short obj) {
+    return 0;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(Short obj) {
+    return obj.toString().length();
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(Short obj)
-    {
-        return obj.toString();
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public String toString(Short obj) {
+    return obj.toString();
+  }
 
-   
-    public Class<Short> getType()
-    {
-        return Short.class;
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.INTEGER;
-    }
 
-    public Short compose(Object value)
-    {
-        return (Short)value;
-    }
+  public Class<Short> getType() {
+    return Short.class;
+  }
 
-    public Object decompose(Short value)
-    {
-        return (Object)value;
-    }
+  public int getJdbcType() {
+    return Types.INTEGER;
+  }
+
+  public Short compose(Object value) {
+    return (Short) value;
+  }
+
+  public Object decompose(Short value) {
+    return value;
+  }
 }

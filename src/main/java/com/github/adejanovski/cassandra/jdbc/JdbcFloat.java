@@ -14,69 +14,57 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
+public class JdbcFloat extends AbstractJdbcType<Float> {
 
-public class JdbcFloat extends AbstractJdbcType<Float>
-{
-    public static final JdbcFloat instance = new JdbcFloat();
+  public static final JdbcFloat instance = new JdbcFloat();
 
-    JdbcFloat() {}
+  JdbcFloat() {
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getScale(Float obj)
-    {
-        return 40;
-    }
+  public int getScale(Float obj) {
+    return 40;
+  }
 
-    public int getPrecision(Float obj)
-    {
-        return 7;
-    }
+  public int getPrecision(Float obj) {
+    return 7;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public String toString(Float obj)
-    {
-        return obj.toString();
-    }
+  public String toString(Float obj) {
+    return obj.toString();
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-    public Class<Float> getType()
-    {
-        return Float.class;
-    }
+  public Class<Float> getType() {
+    return Float.class;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.FLOAT;
-    }
+  public int getJdbcType() {
+    return Types.FLOAT;
+  }
 
-    public Float compose(Object value)
-    {
-        return (Float)value;
-    }
+  public Float compose(Object value) {
+    return (Float) value;
+  }
 
-    public Object decompose(Float value)
-    {
-        return (Object)value;
-    }
+  public Object decompose(Float value) {
+    return (Object) value;
+  }
 }

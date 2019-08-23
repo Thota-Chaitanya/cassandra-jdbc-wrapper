@@ -20,78 +20,62 @@ import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
-public class JdbcInetAddress extends AbstractJdbcType<InetAddress>
-{
-    public static final JdbcInetAddress instance = new JdbcInetAddress();
+public class JdbcInetAddress extends AbstractJdbcType<InetAddress> {
 
-    JdbcInetAddress()
-    {
-    }
+  public static final JdbcInetAddress instance = new JdbcInetAddress();
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  JdbcInetAddress() {
+  }
 
-    public int getScale(InetAddress obj)
-    {
-        return 0;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getPrecision(InetAddress obj)
-    {
-        return obj.toString().length();
-    }
+  public int getScale(InetAddress obj) {
+    return 0;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(InetAddress obj) {
+    return obj.toString().length();
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(InetAddress obj)
-    {
-        return obj.getHostAddress();
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public String toString(InetAddress obj) {
+    return obj.getHostAddress();
+  }
 
-    public String getString(ByteBuffer bytes)
-    {
-        return compose(bytes).getHostAddress();
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-    public Class<InetAddress> getType()
-    {
-        return InetAddress.class;
-    }
+  public String getString(ByteBuffer bytes) {
+    return compose(bytes).getHostAddress();
+  }
 
-    public int getJdbcType()
-    {
-        return Types.OTHER;
-    }
+  public Class<InetAddress> getType() {
+    return InetAddress.class;
+  }
 
-    public InetAddress compose(Object value)
-    {
-        try
-        {
-            return InetAddress.getByName((String)value);
-        }
-        catch (UnknownHostException e)
-        {
-            throw new AssertionError(e);
-        }
-    }
+  public int getJdbcType() {
+    return Types.OTHER;
+  }
 
-    public Object decompose(InetAddress value)
-    {
-        return (Object)value.getAddress();
+  public InetAddress compose(Object value) {
+    try {
+      return InetAddress.getByName((String) value);
+    } catch (UnknownHostException e) {
+      throw new AssertionError(e);
     }
+  }
+
+  public Object decompose(InetAddress value) {
+    return (Object) value.getAddress();
+  }
 }

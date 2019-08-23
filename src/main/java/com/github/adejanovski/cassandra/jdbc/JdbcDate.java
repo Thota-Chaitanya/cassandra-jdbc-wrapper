@@ -20,107 +20,92 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class JdbcDate extends AbstractJdbcType<Date>
-{
-    public static final String[] iso8601Patterns = new String[] {
-        "yyyy-MM-dd HH:mm",
-        "yyyy-MM-dd HH:mm:ss",
-        "yyyy-MM-dd HH:mmZ",
-        "yyyy-MM-dd HH:mm:ssZ",
-        "yyyy-MM-dd'T'HH:mm",
-        "yyyy-MM-dd'T'HH:mmZ",
-        "yyyy-MM-dd'T'HH:mm:ss",
-        "yyyy-MM-dd'T'HH:mm:ssZ",
-        "yyyy-MM-dd",
-        "yyyy-MM-ddZ",
-        "yyyy-MM-dd'T'HH:mm:ss.SSS",		
-		"yyyy-MM-dd'T'HH:mm:ss",
-		"yyyy-MM-dd HH:mm:ss.SSS",
-		"yyyy-MM-dd HH:mm:ss",		
-		"yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-    };
-    static final String DEFAULT_FORMAT = iso8601Patterns[3];
-    static final ThreadLocal<SimpleDateFormat> FORMATTER = new ThreadLocal<SimpleDateFormat>()
-    {
-        protected SimpleDateFormat initialValue()
-        {
-            return new SimpleDateFormat(DEFAULT_FORMAT);
-        }
-    };
+public class JdbcDate extends AbstractJdbcType<Date> {
 
-    public static final JdbcDate instance = new JdbcDate();
+  public static final String[] iso8601Patterns = new String[]{
+      "yyyy-MM-dd HH:mm",
+      "yyyy-MM-dd HH:mm:ss",
+      "yyyy-MM-dd HH:mmZ",
+      "yyyy-MM-dd HH:mm:ssZ",
+      "yyyy-MM-dd'T'HH:mm",
+      "yyyy-MM-dd'T'HH:mmZ",
+      "yyyy-MM-dd'T'HH:mm:ss",
+      "yyyy-MM-dd'T'HH:mm:ssZ",
+      "yyyy-MM-dd",
+      "yyyy-MM-ddZ",
+      "yyyy-MM-dd'T'HH:mm:ss.SSS",
+      "yyyy-MM-dd'T'HH:mm:ss",
+      "yyyy-MM-dd HH:mm:ss.SSS",
+      "yyyy-MM-dd HH:mm:ss",
+      "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+  };
+  static final String DEFAULT_FORMAT = iso8601Patterns[3];
+  static final ThreadLocal<SimpleDateFormat> FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(DEFAULT_FORMAT);
+    }
+  };
 
-    JdbcDate() {}
+  public static final JdbcDate instance = new JdbcDate();
 
-    public boolean isCaseSensitive()
-    {
-        return false;
+  JdbcDate() {
+  }
+
+  public boolean isCaseSensitive() {
+    return false;
+  }
+
+  public int getScale(Date obj) {
+    return -1;
+  }
+
+  public int getPrecision(Date obj) {
+    return -1;
+  }
+
+  public boolean isCurrency() {
+    return false;
+  }
+
+  public boolean isSigned() {
+    return false;
+  }
+
+  public String toString(Date obj) {
+    return FORMATTER.get().format(obj);
+  }
+
+  public boolean needsQuotes() {
+    return false;
+  }
+
+  public String getString(ByteBuffer bytes) {
+    if (bytes.remaining() == 0) {
+      return "";
+    }
+    if (bytes.remaining() != 8) {
+      throw new MarshalException("A date is exactly 8 bytes (stored as a long): " + bytes.remaining());
     }
 
-    public int getScale(Date obj)
-    {
-        return -1;
-    }
+    // uses ISO-8601 formatted string
+    return FORMATTER.get().format(new Date(bytes.getLong(bytes.position())));
+  }
 
-    public int getPrecision(Date obj)
-    {
-        return -1;
-    }
+  public Class<Date> getType() {
+    return Date.class;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getJdbcType() {
+    return Types.TIMESTAMP;
+  }
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  public Date compose(Object value) {
+    return (Date) value;
+  }
 
-    public String toString(Date obj)
-    {
-        return FORMATTER.get().format(obj);
-    }
-
-    public boolean needsQuotes()
-    {
-        return false;
-    }
-
-    public String getString(ByteBuffer bytes)
-    {
-        if (bytes.remaining() == 0)
-        {
-            return "";
-        }
-        if (bytes.remaining() != 8)
-        {
-            throw new MarshalException("A date is exactly 8 bytes (stored as a long): " + bytes.remaining());
-        }
-
-        // uses ISO-8601 formatted string
-        return FORMATTER.get().format(new Date(bytes.getLong(bytes.position())));
-    }
-
-    public Class<Date> getType()
-    {
-        return Date.class;
-    }
-
-    public int getJdbcType()
-    {
-        return Types.TIMESTAMP;
-    }
-
-    public Date compose(Object value)
-    {
-        return (Date)value;
-    }
-
-    public Object decompose(Date value)
-    {
-      return (value==null) ? null
-                           : (Object)value;
-    }
+  public Object decompose(Date value) {
+    return (value == null) ? null
+        : (Object) value;
+  }
 
 }

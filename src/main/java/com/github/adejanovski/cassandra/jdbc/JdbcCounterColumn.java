@@ -14,9 +14,10 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-public class JdbcCounterColumn extends JdbcLong
-{
-    public static final JdbcCounterColumn instance = new JdbcCounterColumn();
+public class JdbcCounterColumn extends JdbcLong {
 
-    JdbcCounterColumn() {}
+  public static final JdbcCounterColumn instance = new JdbcCounterColumn();
+
+  JdbcCounterColumn() {
+  }
 }

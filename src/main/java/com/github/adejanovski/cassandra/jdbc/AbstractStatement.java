@@ -17,7 +17,6 @@ package com.github.adejanovski.cassandra.jdbc;
 import java.io.InputStream;
 import java.io.Reader;
 import java.sql.Array;
-import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.NClob;
 import java.sql.Ref;
@@ -26,158 +25,131 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLXML;
 
-abstract class AbstractStatement
-{
-    protected static final String NOT_SUPPORTED = "the Cassandra implementation does not support this method";
+abstract class AbstractStatement {
 
-    /*
-     * From the Statement Implementation
-     */
-    public void cancel() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    public boolean execute(String arg0, int[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  protected static final String NOT_SUPPORTED = "the Cassandra implementation does not support this method";
 
-    public boolean execute(String arg0, String[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  /*
+   * From the Statement Implementation
+   */
+  public void cancel() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public int executeUpdate(String arg0, int[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    public int executeUpdate(String arg0, String[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    public ResultSet getGeneratedKeys() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-   
-    public void setCursorName(String arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public boolean execute(String arg0, int[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void closeOnCompletion() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public boolean execute(String arg0, String[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public boolean isCloseOnCompletion() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    /*
-     * From the PreparedStatement Implementation
-     */
-    
-    public void setArray(int parameterIndex, Array x) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public int executeUpdate(String arg0, int[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setAsciiStream(int parameterIndex, InputStream x) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public int executeUpdate(String arg0, String[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setAsciiStream(int parameterIndex, InputStream x, int length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public ResultSet getGeneratedKeys() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setAsciiStream(int parameterIndex, InputStream x, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setCursorName(String arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setBinaryStream(int parameterIndex, InputStream x) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void closeOnCompletion() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setBinaryStream(int parameterIndex, InputStream x, int length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public boolean isCloseOnCompletion() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setBinaryStream(int parameterIndex, InputStream x, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  /*
+   * From the PreparedStatement Implementation
+   */
+
+  public void setArray(int parameterIndex, Array x) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setAsciiStream(int parameterIndex, InputStream x) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setAsciiStream(int parameterIndex, InputStream x, int length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setAsciiStream(int parameterIndex, InputStream x, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setBinaryStream(int parameterIndex, InputStream x) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setBinaryStream(int parameterIndex, InputStream x, int length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setBinaryStream(int parameterIndex, InputStream x, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
 
-    public void setBlob(int parameterIndex, InputStream inputStream, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setBlob(int parameterIndex, InputStream inputStream, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setCharacterStream(int parameterIndex, Reader reader) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setCharacterStream(int parameterIndex, Reader reader) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    
-    public void setCharacterStream(int parameterIndex, Reader reader, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
 
-    public void setClob(int parameterIndex, Clob x) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException("method not supported");
-    }
+  public void setCharacterStream(int parameterIndex, Reader reader, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setClob(int parameterIndex, Reader reader) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setClob(int parameterIndex, Clob x) throws SQLException {
+    throw new SQLFeatureNotSupportedException("method not supported");
+  }
 
-    public void setClob(int parameterIndex, Reader reader, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setClob(int parameterIndex, Reader reader) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNCharacterStream(int parameterIndex, Reader value) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setClob(int parameterIndex, Reader reader, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNCharacterStream(int parameterIndex, Reader value, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setNCharacterStream(int parameterIndex, Reader value) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNClob(int parameterIndex, NClob value) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setNCharacterStream(int parameterIndex, Reader value, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNClob(int parameterIndex, Reader reader) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setNClob(int parameterIndex, NClob value) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNClob(int parameterIndex, Reader reader, long length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setNClob(int parameterIndex, Reader reader) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setNClob(int parameterIndex, Reader reader, long length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
 //    public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException
 //    {
 //        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
 //    }
-
 
 //    public void setObject(int parameterIndex, Object x, int targetSqlType, int scaleOrLength) throws SQLException
 //    {
@@ -185,20 +157,16 @@ abstract class AbstractStatement
 //    }
 
 
+  public void setRef(int parameterIndex, Ref x) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setRef(int parameterIndex, Ref x) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setSQLXML(int parameterIndex, SQLXML xmlObject) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setSQLXML(int parameterIndex, SQLXML xmlObject) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-
-    public void setUnicodeStream(int parameterIndex, InputStream x, int length) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void setUnicodeStream(int parameterIndex, InputStream x, int length) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
 }

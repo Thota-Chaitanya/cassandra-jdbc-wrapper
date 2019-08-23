@@ -14,15 +14,13 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-public class MarshalException extends RuntimeException
-{
-    public MarshalException(String message)
-    {
-        super(message);
-    }
+public class MarshalException extends RuntimeException {
 
-    public MarshalException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
+  public MarshalException(String message) {
+    super(message);
+  }
+
+  public MarshalException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

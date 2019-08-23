@@ -18,80 +18,65 @@ import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
-public class JdbcLong extends AbstractJdbcType<Long>
-{
-    public static final JdbcLong instance = new JdbcLong();
+public class JdbcLong extends AbstractJdbcType<Long> {
 
-    JdbcLong()
-    {
+  public static final JdbcLong instance = new JdbcLong();
+
+  JdbcLong() {
+  }
+
+  public boolean isCaseSensitive() {
+    return false;
+  }
+
+  public int getScale(Long obj) {
+    return 0;
+  }
+
+  public int getPrecision(Long obj) {
+    return obj.toString().length();
+  }
+
+  public boolean isCurrency() {
+    return false;
+  }
+
+  public boolean isSigned() {
+    return true;
+  }
+
+  public String toString(Long obj) {
+    return obj.toString();
+  }
+
+  public boolean needsQuotes() {
+    return false;
+  }
+
+  public String getString(ByteBuffer bytes) {
+    if (bytes.remaining() == 0) {
+      return "";
+    }
+    if (bytes.remaining() != 8) {
+      throw new MarshalException("A long is exactly 8 bytes: " + bytes.remaining());
     }
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+    return String.valueOf(bytes.getLong(bytes.position()));
+  }
 
-    public int getScale(Long obj)
-    {
-        return 0;
-    }
+  public Class<Long> getType() {
+    return Long.class;
+  }
 
-    public int getPrecision(Long obj)
-    {
-        return obj.toString().length();
-    }
+  public int getJdbcType() {
+    return Types.BIGINT;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public Long compose(Object obj) {
+    return (Long) obj;
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
-
-    public String toString(Long obj)
-    {
-        return obj.toString();
-    }
-
-    public boolean needsQuotes()
-    {
-        return false;
-    }
-
-    public String getString(ByteBuffer bytes)
-    {
-        if (bytes.remaining() == 0)
-        {
-            return "";
-        }
-        if (bytes.remaining() != 8)
-        {
-            throw new MarshalException("A long is exactly 8 bytes: " + bytes.remaining());
-        }
-
-        return String.valueOf(bytes.getLong(bytes.position()));
-    }
-
-    public Class<Long> getType()
-    {
-        return Long.class;
-    }
-
-    public int getJdbcType()
-    {
-        return Types.BIGINT;
-    }
-
-    public Long compose(Object obj)
-    {
-        return (Long)obj;
-    }
-
-    public Object decompose(Long value)
-    {
-        return (Object)value;
-    }
+  public Object decompose(Long value) {
+    return value;
+  }
 }
