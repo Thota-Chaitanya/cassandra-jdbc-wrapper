@@ -21,17 +21,6 @@
 		</license>
 	</licenses>
 
-	<developers>
-		<developer>
-			<id>adejanovski</id>
-			<name>Alexander Dejanovski</name>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-
 	<properties>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
@@ -335,7 +324,15 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+    </plugins>
 	</build>
 
 	<profiles>

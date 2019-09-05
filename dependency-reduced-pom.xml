@@ -8,15 +8,6 @@
   <description>JDBC wrapper for the DataStax CQL Java Driver.</description>
   <url>https://github.com/adejanovski/cassandra-jdbc-wrapper</url>
   <inceptionYear>2015</inceptionYear>
-  <developers>
-    <developer>
-      <id>adejanovski</id>
-      <name>Alexander Dejanovski</name>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-  </developers>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -215,6 +206,13 @@
           <excludes>
             <exclude>**/*UnitTest.class</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
     </plugins>

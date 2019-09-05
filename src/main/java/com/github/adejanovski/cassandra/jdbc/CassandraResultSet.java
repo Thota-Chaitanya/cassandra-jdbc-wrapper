@@ -50,6 +50,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -739,6 +740,8 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
         return (Object) currentRow.getUUID(index - 1);
       } else if (typeName.equals("varint")) {
         return (Object) currentRow.getInt(index - 1);
+      } else if (typeName.equals("time")) {
+        return (Object) getTime(index);
       }
 
 
@@ -837,6 +840,8 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
         return (Object) currentRow.getUUID(name);
       } else if (typeName.equals("varint")) {
         return (Object) currentRow.getInt(name);
+      } else if (typeName.equals("time")) {
+        return (Object) getTime(name);
       }
 
     }
@@ -917,30 +922,20 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Time getTime(int index) throws SQLException {
     checkIndex(index);
-    java.util.Date date = currentRow.getTimestamp(index - 1);
-    if (date == null) {
-      return null;
-    }
-    return new Time(currentRow.getTimestamp(index - 1).getTime());
+    LocalTime localTime = LocalTime.ofNanoOfDay(currentRow.getLong(index - 1));
+    return Time.valueOf(localTime);
   }
 
   public Time getTime(int index, Calendar calendar) throws SQLException {
     checkIndex(index);
     // silently ignore the Calendar argument; its a hint we do not need
-    java.util.Date date = currentRow.getTimestamp(index - 1);
-    if (date == null) {
-      return null;
-    }
-    return getTime(index - 1);
+    return getTime(index);
   }
 
   public Time getTime(String name) throws SQLException {
     checkName(name);
-    java.util.Date date = currentRow.getTimestamp(name);
-    if (date == null) {
-      return null;
-    }
-    return new Time(currentRow.getTimestamp(name).getTime());
+    LocalTime localTime = LocalTime.ofNanoOfDay(currentRow.getLong(name));
+    return Time.valueOf(localTime);
   }
 
   public Time getTime(String name, Calendar calendar) throws SQLException {
