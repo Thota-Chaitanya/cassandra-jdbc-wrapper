@@ -28,8 +28,8 @@ public class LongToIntCodec extends TypeCodec<Integer> {
 
     }
     // always duplicate the ByteBuffer instance before consuming it!
-    Long value = ByteBufferUtil.toLong(paramByteBuffer.duplicate());
-    return value.intValue();
+    long value = ByteBufferUtil.toLong(paramByteBuffer.duplicate());
+    return (int) value;
   }
 
   @Override

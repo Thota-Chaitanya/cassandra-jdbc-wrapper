@@ -17,40 +17,23 @@ package com.github.adejanovski.cassandra.jdbc;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.InetAddress;
+import com.github.adejanovski.cassandra.jdbc.result.set.MetadataResultSets;
+import com.github.adejanovski.cassandra.jdbc.statement.CassandraStatement;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 //import com.datastax.driver.core.CCMBridge;
-import com.github.adejanovski.cassandra.jdbc.CassandraStatement;
-import com.github.adejanovski.cassandra.jdbc.MetadataResultSets;
 
 
 public class MetadataResultSetsUnitTest
 {
-    private static String HOST = System.getProperty("host", ConnectionDetails.getHost());
+
     private static final int PORT = Integer.parseInt(System.getProperty("port", ConnectionDetails.getPort()+""));
     private static final String KEYSPACE1 = "testks1";
     private static final String KEYSPACE2 = "testks2";
@@ -58,10 +41,8 @@ public class MetadataResultSetsUnitTest
     private static final String CREATE_KS = "CREATE KEYSPACE IF NOT EXISTS \"%s\" WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};";
       
     private static java.sql.Connection con = null;
-    
 
-    private static CCMBridge ccmBridge = null;
-    
+
     private static boolean suiteLaunch = true;
     
 
@@ -74,11 +55,11 @@ public class MetadataResultSetsUnitTest
     		BuildCluster.setUpBeforeSuite();
     		suiteLaunch=false;
     	}
-    	
-    	HOST = CCMBridge.ipOfNode(1);
+
+        String HOST = CCMBridge.ipOfNode(1);
     	
         Class.forName("com.github.adejanovski.cassandra.jdbc.CassandraDriver");
-        String URL = String.format("jdbc:cassandra://%s:%d/%s?version=3.0.0",HOST,PORT,"system");
+        String URL = String.format("jdbc:cassandra://%s:%d/%s?version=3.0.0", HOST,PORT,"system");
         System.out.println("Connection URL = '"+URL +"'");
         
         con = DriverManager.getConnection(URL);
@@ -128,7 +109,7 @@ public class MetadataResultSetsUnitTest
         con.close();
 
         // open it up again to see the new CF
-        con = DriverManager.getConnection(String.format("jdbc:cassandra://%s:%d/%s?version=3.0.0",HOST,PORT,KEYSPACE1));
+        con = DriverManager.getConnection(String.format("jdbc:cassandra://%s:%d/%s?version=3.0.0", HOST,PORT,KEYSPACE1));
 
     }
     
@@ -142,15 +123,13 @@ public class MetadataResultSetsUnitTest
         
     }
     
-    private final String showColumn(int index, ResultSet result) throws SQLException
+    private String showColumn(int index, ResultSet result) throws SQLException
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[").append(index).append("]");
-        sb.append(result.getObject(index));
-        return sb.toString();
+        return "[" + index + "]"
+            + result.getObject(index);
     }
 
-    private final String toString(ResultSet result) throws SQLException
+    private String toString(ResultSet result) throws SQLException
     {
        StringBuilder sb = new StringBuilder();
 
@@ -161,14 +140,14 @@ public class MetadataResultSetsUnitTest
            sb.append(String.format("(%d) ",result.getRow()));
            for (int i = 1; i <= colCount; i++)
            {
-               sb.append(" " +showColumn(i,result)); 
+               sb.append(" ").append(showColumn(i, result));
            }
            sb.append("\n");
        }
        return sb.toString();
     }
 
-	private final String getColumnNames(ResultSetMetaData metaData) throws SQLException
+	private String getColumnNames(ResultSetMetaData metaData) throws SQLException
 	{
        StringBuilder sb = new StringBuilder();
         int count = metaData.getColumnCount();

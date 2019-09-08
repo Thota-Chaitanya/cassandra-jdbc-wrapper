@@ -29,13 +29,13 @@ public class BigDecimalToBigintCodec extends TypeCodec<BigDecimal> {
 
     }
     // always duplicate the ByteBuffer instance before consuming it!
-    Long value = ByteBufferUtil.toLong(paramByteBuffer.duplicate());
+    long value = ByteBufferUtil.toLong(paramByteBuffer.duplicate());
     return new BigDecimal(value);
   }
 
   @Override
   public BigDecimal parse(String paramString) throws InvalidTypeException {
-    return BigDecimal.valueOf(Long.valueOf(paramString));
+    return BigDecimal.valueOf(Long.parseLong(paramString));
   }
 
   @Override

@@ -14,15 +14,9 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
-
-import static org.testng.Assert.*;
-
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import com.datastax.driver.core.policies.ConstantReconnectionPolicy;
 import com.datastax.driver.core.policies.DCAwareRoundRobinPolicy;
@@ -31,17 +25,21 @@ import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import com.datastax.driver.core.policies.ExponentialReconnectionPolicy;
 import com.datastax.driver.core.policies.FallthroughRetryPolicy;
 import com.datastax.driver.core.policies.LatencyAwarePolicy;
-import com.datastax.driver.core.policies.LoadBalancingPolicy;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 import com.datastax.driver.core.policies.TokenAwarePolicy;
-import com.github.adejanovski.cassandra.jdbc.Utils;
+import com.github.adejanovski.cassandra.jdbc.utils.Utils;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 public class UtilsUnitTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(CollectionsUnitTest.class);
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception
+    public static void setUpBeforeClass()
     {}
 
     @Test
@@ -122,7 +120,7 @@ public class UtilsUnitTest
     	System.out.println("====================");
     	lbPolicyStr = "TokenAwarePolicy";
     	System.out.println(lbPolicyStr);
-    	assertTrue(Utils.parseLbPolicy(lbPolicyStr)==null);
+      assertNull(Utils.parseLbPolicy(lbPolicyStr));
     	System.out.println("====================");
     	lbPolicyStr = "LatencyAwarePolicy(TokenAwarePolicy(RoundRobinPolicy()),(double) 10.5,(long) 1,(long) 10,(long)1,10)";    	
     	System.out.println(lbPolicyStr);

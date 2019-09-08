@@ -28,8 +28,8 @@ public class DoubleToDecimalCodec extends TypeCodec<Double> {
 
     }
     // always duplicate the ByteBuffer instance before consuming it!
-    Float value = ByteBufferUtil.toFloat(paramByteBuffer.duplicate());
-    return value.doubleValue();
+    float value = ByteBufferUtil.toFloat(paramByteBuffer.duplicate());
+    return (double) value;
   }
 
   @Override

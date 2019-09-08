@@ -14,16 +14,8 @@
 package com.github.adejanovski.cassandra.jdbc;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
-
+import com.github.adejanovski.cassandra.jdbc.statement.CassandraStatement;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,23 +23,20 @@ import java.sql.SQLTransientException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 //import com.datastax.driver.core.CCMBridge;
-import com.github.adejanovski.cassandra.jdbc.CassandraStatement;
 
 public class BatchStatementsUnitTest {
 	
     private static final Logger LOG = LoggerFactory.getLogger(CollectionsUnitTest.class);
 
 
-    public static String HOST = System.getProperty("host", ConnectionDetails.getHost());
-    private static final int PORT = Integer.parseInt(System.getProperty("port", ConnectionDetails.getPort() + ""));
+  private static final int PORT = Integer.parseInt(System.getProperty("port", ConnectionDetails.getPort() + ""));
     private static final String KEYSPACE = "testks";
     private static final String SYSTEM = "system";
     private static final String CQLV3 = "3.0.0";
@@ -68,7 +57,7 @@ public class BatchStatementsUnitTest {
     		BuildCluster.setUpBeforeSuite();
     		suiteLaunch=false;
     	}
-    	HOST = CCMBridge.ipOfNode(1);        
+      String HOST = CCMBridge.ipOfNode(1);
 
  
         Class.forName("com.github.adejanovski.cassandra.jdbc.CassandraDriver");
@@ -165,12 +154,12 @@ public class BatchStatementsUnitTest {
         
         StringBuilder queries = new StringBuilder();
         for(int i=0;i<nbRows+10;i++){
-        	queries.append("SELECT * FROM testcollection where k = "+ i + ";");
+        	queries.append("SELECT * FROM testcollection where k = ").append(i).append(";");
         }
         ResultSet result = statement.executeQuery(queries.toString());
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));
@@ -202,7 +191,7 @@ public class BatchStatementsUnitTest {
         
         for(int i=0;i<nbRows;i++){
         	//System.out.println("--- Statement " + i + " ==> INSERT INTO testcollection (k,L) VALUES( " + i + ",[1, 3, 12345])");
-        	queryBuilder.append("INSERT INTO testcollection (k,L) VALUES( " + i + ",[1, 3, 12345]);");
+        	queryBuilder.append("INSERT INTO testcollection (k,L) VALUES( ").append(i).append(",[1, 3, 12345]);");
         }
         
         statement.execute(queryBuilder.toString());
@@ -212,12 +201,12 @@ public class BatchStatementsUnitTest {
         
         StringBuilder queries = new StringBuilder();
         for(int i=0;i<nbRows;i++){
-        	queries.append("SELECT * FROM testcollection where k = "+ i + ";");
+        	queries.append("SELECT * FROM testcollection where k = ").append(i).append(";");
         }
         ResultSet result = statement.executeQuery(queries.toString());
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));
@@ -262,13 +251,13 @@ public class BatchStatementsUnitTest {
         
         StringBuilder queries = new StringBuilder();
         for(int i=0;i<nbRows;i++){
-        	queries.append("SELECT * FROM testcollection where k = "+ i + ";");
+        	queries.append("SELECT * FROM testcollection where k = ").append(i).append(";");
         }
         ResultSet result = statement.executeQuery(queries.toString());
         
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));
@@ -333,14 +322,14 @@ public class BatchStatementsUnitTest {
         
         StringBuilder query=new StringBuilder();
         for(int i=0;i<10;i++){
-        	query.append("SELECT * FROM testcollection where k=" + i + ";");
+        	query.append("SELECT * FROM testcollection where k=").append(i).append(";");
         }
         
         Statement selectStatement = con2.createStatement();
         ResultSet result = selectStatement.executeQuery(query.toString());
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));
@@ -382,14 +371,14 @@ public class BatchStatementsUnitTest {
         
         StringBuilder query=new StringBuilder();
         for(int i=0;i<1;i++){
-        	query.append("SELECT * FROM testcollection where k=" + i + ";");
+        	query.append("SELECT * FROM testcollection where k=").append(i).append(";");
         }
         
         Statement selectStatement = con.createStatement();
         ResultSet result = selectStatement.executeQuery(query.toString());
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));
@@ -423,9 +412,9 @@ public class BatchStatementsUnitTest {
         for(int i=0;i<nbRows;i++){
         	//System.out.println("--- Statement " + i + " ==> INSERT INTO testcollection (k,L) VALUES( " + i + ",[1, 3, 12345])");
         	if(i%100==0){
-        		queryBuilder.append("INSERT INTO testcollection (k,L,m) VALUES( " + i + ",[1, 3, 12345],1);");
+        		queryBuilder.append("INSERT INTO testcollection (k,L,m) VALUES( ").append(i).append(",[1, 3, 12345],1);");
         	}else{
-        		queryBuilder.append("INSERT INTO testcollection (k,L) VALUES( " + i + ",[1, 3, 12345]);");
+        		queryBuilder.append("INSERT INTO testcollection (k,L) VALUES( ").append(i).append(",[1, 3, 12345]);");
         	}
         }
         
@@ -436,12 +425,12 @@ public class BatchStatementsUnitTest {
         
         StringBuilder queries = new StringBuilder();
         for(int i=0;i<nbRows;i++){
-        	queries.append("SELECT * FROM testcollection where k = "+ i + ";");
+        	queries.append("SELECT * FROM testcollection where k = ").append(i).append(";");
         }
         ResultSet result = statement.executeQuery(queries.toString());
 
         int nbRow = 0;
-        ArrayList<Integer> ids = new ArrayList<Integer>(); 
+        ArrayList<Integer> ids = new ArrayList<>();
         while(result.next()){
         	nbRow++;
         	ids.add(result.getInt("k"));

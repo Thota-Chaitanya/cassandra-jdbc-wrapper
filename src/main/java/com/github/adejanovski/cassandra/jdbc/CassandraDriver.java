@@ -14,11 +14,13 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import static com.github.adejanovski.cassandra.jdbc.Utils.NOT_SUPPORTED;
-import static com.github.adejanovski.cassandra.jdbc.Utils.PROTOCOL;
-import static com.github.adejanovski.cassandra.jdbc.Utils.TAG_PASSWORD;
-import static com.github.adejanovski.cassandra.jdbc.Utils.TAG_USER;
+import static com.github.adejanovski.cassandra.jdbc.utils.Utils.NOT_SUPPORTED;
+import static com.github.adejanovski.cassandra.jdbc.utils.Utils.PROTOCOL;
+import static com.github.adejanovski.cassandra.jdbc.utils.Utils.TAG_PASSWORD;
+import static com.github.adejanovski.cassandra.jdbc.utils.Utils.TAG_USER;
 
+import com.github.adejanovski.cassandra.jdbc.connection.CassandraConnection;
+import com.github.adejanovski.cassandra.jdbc.session.SessionHolder;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -34,8 +36,6 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The Class CassandraDriver.
@@ -49,8 +49,6 @@ public class CassandraDriver implements Driver {
   public static final int DVR_PATCH_VERSION = 6;
 
   public static final String DVR_NAME = "Datastax JDBC Driver";
-
-  private static final Logger logger = LoggerFactory.getLogger(CassandraDriver.class);
 
   static {
     // Register the CassandraDriver with DriverManager
@@ -75,7 +73,7 @@ public class CassandraDriver implements Driver {
   /**
    * Method to validate whether provided connection url matches with pattern or not.
    */
-  public boolean acceptsURL(String url) throws SQLException {
+  public boolean acceptsURL(String url) {
     return url.startsWith(PROTOCOL);
   }
 
@@ -100,18 +98,18 @@ public class CassandraDriver implements Driver {
           // Get (or create) the corresponding Session from the cache
           SessionHolder sessionHolder = sessionsCache.get(cacheKey);
 
-            if (sessionHolder.acquire()) {
-                return new CassandraConnection(sessionHolder);
-            }
+          if (sessionHolder.acquire()) {
+            return new CassandraConnection(sessionHolder);
+          }
           // If we failed to acquire, it means we raced with the release of the last reference to the session
           // (which also removes it from the cache).
           // Loop to try again, that will cause the cache to create a new instance.
         }
       } catch (ExecutionException e) {
         Throwable cause = e.getCause();
-          if (cause instanceof SQLException) {
-              throw (SQLException) cause;
-          }
+        if (cause instanceof SQLException) {
+          throw (SQLException) cause;
+        }
         throw new SQLNonTransientConnectionException("Unexpected error while creating connection", e);
       }
     }
@@ -135,10 +133,10 @@ public class CassandraDriver implements Driver {
   /**
    * Returns default driver property info object.
    */
-  public DriverPropertyInfo[] getPropertyInfo(String url, Properties props) throws SQLException {
-      if (props == null) {
-          props = new Properties();
-      }
+  public DriverPropertyInfo[] getPropertyInfo(String url, Properties props) {
+    if (props == null) {
+      props = new Properties();
+    }
 
     DriverPropertyInfo[] info = new DriverPropertyInfo[2];
 
@@ -159,6 +157,6 @@ public class CassandraDriver implements Driver {
   }
 
   public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
-    throw new SQLFeatureNotSupportedException(String.format(NOT_SUPPORTED));
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 }

@@ -10,9 +10,9 @@ public class MainClass {
 
   public static void main(String[] args) throws ClassNotFoundException, SQLException {
     Class.forName("org.apache.cassandra2.cql.jdbc.CassandraDriver");
-    Connection conn = DriverManager.getConnection("jdbc:cassandra://127.0.0.1:9042/yantriks", "cassandra", "cassandra");
+    Connection conn = DriverManager.getConnection("jdbc:cassandra://127.0.0.1:9042/yantriks_yso", "cassandra", "cassandra");
     Statement stmt = conn.createStatement();
-    stmt.execute("SELECT date FROM yantriks_capacity.ycs_location_fulfillment_type_override");
+    stmt.execute("SELECT * from yantriks_yso.product");
     ResultSet rs = stmt.getResultSet();
     int columnsSize = rs.getMetaData().getColumnCount();
     for (int i=0; i < columnsSize; i++) {
@@ -20,7 +20,7 @@ public class MainClass {
       System.out.println(rs.getMetaData().getColumnType(i+1));
       System.out.println(rs.getMetaData().getColumnTypeName(i+1));
     }
-    System.out.println(rs.getDate("date"));
+    System.out.println(rs.getDate("product_launch_date"));
     rs.close();
     stmt.close();
     conn.close();
