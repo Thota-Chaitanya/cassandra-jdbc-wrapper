@@ -186,10 +186,6 @@ abstract class AbstractResultSet {
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 
-  //
-  // all the update methods are unsupported, requires a separate statement in Cassandra
-  //
-
   public void updateArray(int arg0, Array arg1) throws SQLException {
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }

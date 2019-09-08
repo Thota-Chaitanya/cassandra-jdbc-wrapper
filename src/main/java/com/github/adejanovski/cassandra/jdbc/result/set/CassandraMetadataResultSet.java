@@ -37,11 +37,9 @@ import com.github.adejanovski.cassandra.jdbc.type.JdbcShort;
 import com.github.adejanovski.cassandra.jdbc.type.JdbcUTF8;
 import com.github.adejanovski.cassandra.jdbc.type.JdbcUUID;
 import com.github.adejanovski.cassandra.jdbc.type.TypesMap;
-import com.google.common.collect.Lists;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.URL;
 import java.sql.Blob;
 import java.sql.Date;
@@ -59,7 +57,6 @@ import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -298,7 +295,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     checkNotClosed();
   }
 
-  public void close()  {
+  public void close() {
         /* indexMap = null;
         values = null; */
     if (!isClosed()) {
@@ -343,18 +340,6 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     return currentRow.getDecimal(name).setScale(scale);
   }
 
-
-  public BigInteger getBigInteger(int index) throws SQLSyntaxErrorException {
-    checkIndex(index);
-    return currentRow.getVarint(index - 1);
-  }
-
-  public BigInteger getBigInteger(String name) throws SQLSyntaxErrorException {
-    checkName(name);
-    return currentRow.getVarint(name);
-  }
-
-
   public boolean getBoolean(int index) throws SQLSyntaxErrorException {
     checkIndex(index);
     return currentRow.getBool(index - 1);
@@ -376,11 +361,11 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
   }
 
 
-  public byte[] getBytes(int index)  {
+  public byte[] getBytes(int index) {
     return currentRow.getBytes(index - 1).array();
   }
 
-  public byte[] getBytes(String name)  {
+  public byte[] getBytes(String name) {
     return currentRow.getBytes(name).array();
   }
 
@@ -484,40 +469,9 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
   }
 
 
-  public byte[] getKey()  {
+  public byte[] getKey() {
     return curRowKey;
   }
-
-  public List<?> getList(int index) throws SQLSyntaxErrorException {
-    checkIndex(index);
-    if (currentRow.getColumnDefinitions().getType(index - 1).isCollection()) {
-      try {
-        return Lists.newArrayList(
-            currentRow.getList(index - 1, Class.forName(currentRow.getColumnDefinitions().getType(index - 1).getTypeArguments().get(0).getClass().getCanonicalName())));
-      } catch (ClassNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-
-      } // TODO: a remplacer par une vraie verification des types de collections
-    }
-    return currentRow.getList(index - 1, String.class);
-  }
-
-  public List<?> getList(String name) throws SQLSyntaxErrorException {
-    checkName(name);
-    // return currentRow.getList(name,String.class); // TODO: a remplacer par une vraie verification des types de collections
-    if (currentRow.getColumnDefinitions().getType(name).isCollection()) {
-      try {
-        return Lists.newArrayList(currentRow.getList(name, Class.forName(currentRow.getColumnDefinitions().getType(name).getTypeArguments().get(0).getClass().getCanonicalName())));
-      } catch (ClassNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-
-      } // TODO: a remplacer par une vraie verification des types de collections
-    }
-    return currentRow.getList(name, String.class);
-  }
-
 
   public long getLong(int index) throws SQLNonTransientException {
     checkIndex(index);
@@ -823,7 +777,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     return rowNumber == 0;
   }
 
-  public boolean isClosed()  {
+  public boolean isClosed() {
     if (this.statement == null) {
       return true;
     }
@@ -840,7 +794,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     return !rowsIterator.hasNext();
   }
 
-  public boolean isWrapperFor(Class<?> iface)  {
+  public boolean isWrapperFor(Class<?> iface) {
     return CassandraResultSetExtras.class.isAssignableFrom(iface);
   }
 
@@ -851,7 +805,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 
-  public synchronized boolean next()  {
+  public synchronized boolean next() {
     if (hasMoreRows()) {
       // populateColumns is called upon init to set up the metadata fields; so skip first call
       if (rowNumber != 0) {
@@ -906,7 +860,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     throw new SQLFeatureNotSupportedException(String.format(NO_INTERFACE, iface.getSimpleName()));
   }
 
-  public boolean wasNull()  {
+  public boolean wasNull() {
     return wasNull;
   }
 
@@ -924,7 +878,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
       return statement.connection.getCatalog();
     }
 
-    public String getColumnClassName(int column)  {/*
+    public String getColumnClassName(int column) {/*
             checkIndex(column);
             return values.get(column - 1).getValueType().getType().getName();*/
       if (currentRow != null) {
@@ -934,7 +888,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
 
     }
 
-    public int getColumnCount()  {
+    public int getColumnCount() {
       if (currentRow != null) {
         return currentRow.getColumnDefinitions().size();
       }
@@ -942,7 +896,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     }
 
     @SuppressWarnings("rawtypes")
-    public int getColumnDisplaySize(int column)  {
+    public int getColumnDisplaySize(int column) {
       //checkIndex(column);
       try {
         AbstractJdbcType jtype;
@@ -985,12 +939,12 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
       //return -1;
     }
 
-    public String getColumnLabel(int column)  {
+    public String getColumnLabel(int column) {
       //checkIndex(column);
       return getColumnName(column);
     }
 
-    public String getColumnName(int column)  {
+    public String getColumnName(int column) {
       //checkIndex(column);
 
       try {
@@ -1003,7 +957,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
       }
     }
 
-    public int getColumnType(int column)  {
+    public int getColumnType(int column) {
       DataType type;
       if (currentRow != null) {
         type = currentRow.getColumnDefinitions().getType(column - 1);
@@ -1017,7 +971,7 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     /**
      * Spec says "database specific type name"; for Cassandra this means the AbstractType.
      */
-    public String getColumnTypeName(int column)  {
+    public String getColumnTypeName(int column) {
 
       //checkIndex(column);
       DataType type;
@@ -1034,14 +988,14 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
       }
     }
 
-    public int getPrecision(int column)  {
+    public int getPrecision(int column) {
 //            checkIndex(column);
 //            TypedColumn col = values.get(column - 1);
 //            return col.getValueType().getPrecision(col.getValue());
       return 0;
     }
 
-    public int getScale(int column)  {
+    public int getScale(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().getScale(tc.getValue());
@@ -1061,27 +1015,27 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
             throw new SQLFeatureNotSupportedException();
         }*/
 
-    public boolean isAutoIncrement(int column)  {
+    public boolean isAutoIncrement(int column) {
       return true;
 //            checkIndex(column);
 //            return values.get(column - 1).getValueType() instanceof JdbcCounterColumn; // todo: check Value is correct.
     }
 
-    public boolean isCaseSensitive(int column)  {
+    public boolean isCaseSensitive(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isCaseSensitive();
       return true;
     }
 
-    public boolean isCurrency(int column)  {
+    public boolean isCurrency(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isCurrency();
       return false;
     }
 
-    public boolean isDefinitelyWritable(int column)  {
+    public boolean isDefinitelyWritable(int column) {
       //checkIndex(column);
       return isWritable(column);
     }
@@ -1089,22 +1043,22 @@ class CassandraMetadataResultSet extends AbstractResultSet implements CassandraR
     /**
      * absence is the equivalent of null in Cassandra
      */
-    public int isNullable(int column)  {
+    public int isNullable(int column) {
       //checkIndex(column);
       return ResultSetMetaData.columnNullable;
     }
 
-    public boolean isReadOnly(int column)  {
+    public boolean isReadOnly(int column) {
       //checkIndex(column);
       return column == 0;
     }
 
-    public boolean isSearchable(int column)  {
+    public boolean isSearchable(int column) {
       //checkIndex(column);
       return false;
     }
 
-    public boolean isSigned(int column)  {
+    public boolean isSigned(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isSigned();

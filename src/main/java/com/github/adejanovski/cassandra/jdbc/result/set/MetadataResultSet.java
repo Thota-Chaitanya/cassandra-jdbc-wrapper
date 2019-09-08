@@ -25,7 +25,6 @@ import java.util.List;
 
 public class MetadataResultSet {
 
-
   private ArrayList<MetadataRow> rows;
 
   public MetadataResultSet() {

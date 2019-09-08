@@ -14,7 +14,6 @@
  */
 package com.github.adejanovski.cassandra.jdbc.type;
 
-import com.github.adejanovski.cassandra.jdbc.type.AbstractJdbcType;
 import java.nio.ByteBuffer;
 import java.sql.Types;
 

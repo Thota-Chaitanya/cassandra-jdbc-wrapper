@@ -7,19 +7,6 @@
   <version>3.1.0</version>
   <description>JDBC wrapper for the DataStax CQL Java Driver.</description>
   <url>https://github.com/adejanovski/cassandra-jdbc-wrapper</url>
-  <inceptionYear>2015</inceptionYear>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:git:git@github.com:adejanovski/cassandra-jdbc-wrapper.git</connection>
-    <developerConnection>scm:git:git@github.com:adejanovski/cassandra-jdbc-wrapper.git</developerConnection>
-    <url>https://github.com/com:adejanovski/cassandra-jdbc-wrapper</url>
-  </scm>
   <build>
     <resources>
       <resource>
@@ -65,14 +52,6 @@
         <plugin>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>2.14</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.4</version>
-          <configuration>
-            <passphrase>${gpg.passphrase}</passphrase>
-            <useAgent>${gpg.useagent}</useAgent>
-          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -278,31 +257,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.3</version>
-          </plugin>
-          <plugin>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.4</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-                <configuration>
-                  <passphrase>${gpg.passphrase}</passphrase>
-                  <useAgent>true</useAgent>
-                </configuration>
-              </execution>
-            </executions>
-            <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
-              <useAgent>true</useAgent>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
       <properties>
@@ -352,18 +306,6 @@
                 <phase>verify</phase>
                 <goals>
                   <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
                 </goals>
               </execution>
             </executions>
@@ -442,9 +384,9 @@
     <datastax.java.driver.version>3.7.2</datastax.java.driver.version>
     <cassandra.host>localhost</cassandra.host>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <gpg.useagent>true</gpg.useagent>
     <cassandra.version>2.1.9</cassandra.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <lombok.version>1.18.8</lombok.version>
   </properties>
 </project>
 

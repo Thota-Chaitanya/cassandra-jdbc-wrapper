@@ -42,19 +42,20 @@ class CassandraRowId implements RowId {
   }
 
   public boolean equals(Object obj) {
-      if (this == obj) {
-          return true;
-      }
-      if (obj == null) {
-          return false;
-      }
-      if (getClass() != obj.getClass()) {
-          return false;
-      }
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
     CassandraRowId other = (CassandraRowId) obj;
     if (bytes == null) {
       return other.bytes == null;
-    } else
+    } else {
       return bytes.equals(other.bytes);
+    }
   }
 }

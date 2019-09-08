@@ -16,7 +16,6 @@ package com.github.adejanovski.cassandra.jdbc.result.set;
 
 import com.datastax.driver.core.DataType;
 import com.datastax.driver.core.exceptions.InvalidTypeException;
-import com.github.adejanovski.cassandra.jdbc.result.set.CassandraResultSet;
 import com.github.adejanovski.cassandra.jdbc.statement.CassandraPreparedStatement;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -213,9 +212,9 @@ public class ColumnDefinitions implements Iterable<ColumnDefinitions.Definition>
     StringBuilder sb = new StringBuilder();
     sb.append("Columns[");
     for (int i = 0; i < size(); i++) {
-        if (i != 0) {
-            sb.append(", ");
-        }
+      if (i != 0) {
+        sb.append(", ");
+      }
       Definition def = byIdx[i];
       sb.append(def.name).append('(').append(def.type).append(')');
     }
@@ -237,29 +236,29 @@ public class ColumnDefinitions implements Iterable<ColumnDefinitions.Definition>
     }
 
     int[] indexes = byName.get(name.toLowerCase());
-      if (!caseSensitive || indexes == null) {
-          return indexes;
-      }
+    if (!caseSensitive || indexes == null) {
+      return indexes;
+    }
 
     // First, optimistic and assume all are matching
     int nbMatch = 0;
-      for (int i = 0; i < indexes.length; i++) {
-          if (name.equals(byIdx[indexes[i]].name)) {
-              nbMatch++;
-          }
+    for (int i = 0; i < indexes.length; i++) {
+      if (name.equals(byIdx[indexes[i]].name)) {
+        nbMatch++;
       }
+    }
 
-      if (nbMatch == indexes.length) {
-          return indexes;
-      }
+    if (nbMatch == indexes.length) {
+      return indexes;
+    }
 
     int[] result = new int[nbMatch];
     int j = 0;
     for (int i = 0; i < indexes.length; i++) {
       int idx = indexes[i];
-        if (name.equals(byIdx[idx].name)) {
-            result[j++] = idx;
-        }
+      if (name.equals(byIdx[idx].name)) {
+        result[j++] = idx;
+      }
     }
 
     return result;
@@ -267,9 +266,9 @@ public class ColumnDefinitions implements Iterable<ColumnDefinitions.Definition>
 
   int[] getAllIdx(String name) {
     int[] indexes = findAllIdx(name);
-      if (indexes == null) {
-          throw new IllegalArgumentException(name + " is not a column defined in this metadata");
-      }
+    if (indexes == null) {
+      throw new IllegalArgumentException(name + " is not a column defined in this metadata");
+    }
 
     return indexes;
   }
@@ -279,33 +278,33 @@ public class ColumnDefinitions implements Iterable<ColumnDefinitions.Definition>
   }
 
   void checkBounds(int i) {
-      if (i < 0 || i >= size()) {
-          throw new ArrayIndexOutOfBoundsException(i);
-      }
+    if (i < 0 || i >= size()) {
+      throw new ArrayIndexOutOfBoundsException(i);
+    }
   }
 
   // Note: we avoid having a vararg method to avoid the array allocation that comes with it.
   void checkType(int i, DataType.Name name) {
     DataType defined = getType(i);
-      if (name != defined.getName()) {
-          throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
-      }
+    if (name != defined.getName()) {
+      throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
+    }
   }
 
   DataType.Name checkType(int i, DataType.Name name1, DataType.Name name2) {
     DataType defined = getType(i);
-      if (name1 != defined.getName() && name2 != defined.getName()) {
-          throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
-      }
+    if (name1 != defined.getName() && name2 != defined.getName()) {
+      throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
+    }
 
     return defined.getName();
   }
 
   DataType.Name checkType(int i, DataType.Name name1, DataType.Name name2, DataType.Name name3) {
     DataType defined = getType(i);
-      if (name1 != defined.getName() && name2 != defined.getName() && name3 != defined.getName()) {
-          throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
-      }
+    if (name1 != defined.getName() && name2 != defined.getName() && name3 != defined.getName()) {
+      throw new InvalidTypeException(String.format("Column %s is of type %s", getName(i), defined));
+    }
 
     return defined.getName();
   }
@@ -370,9 +369,9 @@ public class ColumnDefinitions implements Iterable<ColumnDefinitions.Definition>
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof Definition)) {
-            return false;
-        }
+      if (!(o instanceof Definition)) {
+        return false;
+      }
 
       Definition other = (Definition) o;
       return keyspace.equals(other.keyspace)
