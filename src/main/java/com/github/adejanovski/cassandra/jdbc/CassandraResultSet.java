@@ -150,17 +150,11 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
   public static final int DEFAULT_HOLDABILITY = ResultSet.HOLD_CURSORS_OVER_COMMIT;
   private Row currentRow;
 
-  /**
-   * The rows iterator.
-   */
-  private int currentIteratorIndex = 0;
   private Iterator<Row> rowsIterator;
-  private ArrayList<Iterator<Row>> rowsIterators;
-
 
   int rowNumber = 0;
   // the current row key when iterating through results.
-  private byte[] curRowKey = null;
+  private final byte[] curRowKey = null;
 
   /**
    * The values.
@@ -206,8 +200,6 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     this.fetchDirection = statement.getFetchDirection();
     this.fetchSize = statement.getFetchSize();
     this.driverResultSet = resultSet;
-    this.rowsIterators = Lists.newArrayList();
-    this.currentIteratorIndex = 0;
     //this.schema = resultSet.schema;
 
     // Initialize meta-data from schema
@@ -240,8 +232,6 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
     // Now we concatenate iterators of the different result sets into a single one and voilà !! ;)
 
-    currentIteratorIndex = 0;
-
     rowsIterator = driverResultSet.iterator();
     for (int i = 1; i < resultSets.size(); i++) {
       rowsIterator = Iterators.concat(rowsIterator, resultSets.get(i).iterator()); // this leads to Stack Overflow Exception when there are too many resultSets
@@ -262,16 +252,16 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
   }
 
 
-  private final boolean hasMoreRows() {
+  private boolean hasMoreRows() {
     return (rowsIterator != null && (rowsIterator.hasNext() || (rowNumber == 0 && currentRow != null)));
   }
 
-  private final void populateMetaData() {
+  private void populateMetaData() {
     // not used anymore
 
   }
 
-  private final void populateColumns() {
+  private void populateColumns() {
     //if(rowsIterator.hasNext()){
     currentRow = rowsIterator.next();
     //	}
@@ -300,37 +290,29 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 
-  private final void checkIndex(int index) throws SQLException {
+  private void checkIndex(int index) throws SQLException {
 
     if (currentRow != null) {
-      if (currentRow.isNull(index - 1)) {
-        wasNull = true;
-      } else {
-        wasNull = false;
-      }
+      wasNull = currentRow.isNull(index - 1);
       if (currentRow.getColumnDefinitions() != null) {
         if (index < 1 || index > currentRow.getColumnDefinitions().asList().size()) {
-          throw new SQLSyntaxErrorException(String.format(MUST_BE_POSITIVE, String.valueOf(index)) + " " + currentRow.getColumnDefinitions().asList().size());
+          throw new SQLSyntaxErrorException(String.format(MUST_BE_POSITIVE, index) + " " + currentRow.getColumnDefinitions().asList().size());
         }
       }
     } else if (driverResultSet != null) {
       if (driverResultSet.getColumnDefinitions() != null) {
         if (index < 1 || index > driverResultSet.getColumnDefinitions().asList().size()) {
-          throw new SQLSyntaxErrorException(String.format(MUST_BE_POSITIVE, String.valueOf(index)) + " " + driverResultSet.getColumnDefinitions().asList().size());
+          throw new SQLSyntaxErrorException(String.format(MUST_BE_POSITIVE, index) + " " + driverResultSet.getColumnDefinitions().asList().size());
         }
       }
     }
 
   }
 
-  private final void checkName(String name) throws SQLException {
+  private void checkName(String name) throws SQLException {
     //if (indexMap.get(name) == null) throw new SQLSyntaxErrorException(String.format(VALID_LABELS, name));
     if (currentRow != null) {
-      if (currentRow.isNull(name)) {
-        wasNull = true;
-      } else {
-        wasNull = false;
-      }
+      wasNull = currentRow.isNull(name);
       if (!currentRow.getColumnDefinitions().contains(name)) {
         throw new SQLSyntaxErrorException(String.format(VALID_LABELS, name));
       }
@@ -344,7 +326,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     }
   }
 
-  private final void checkNotClosed() throws SQLException {
+  private void checkNotClosed() throws SQLException {
     if (isClosed()) {
       throw new SQLRecoverableException(WAS_CLOSED_RSLT);
     }
@@ -434,29 +416,14 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
   }
 
 
-  public byte[] getBytes(int index) throws SQLException {
+  public byte[] getBytes(int index) {
     return currentRow.getBytes(index - 1).array();
   }
 
-  public byte[] getBytes(String name) throws SQLException {
+  public byte[] getBytes(String name) {
     return currentRow.getBytes(name).array();
   }
 
-
-  /*    public TypedColumn getColumn(int index) throws SQLException
-      {
-          checkIndex(index);
-          checkNotClosed();
-          return values.get(index - 1);
-      }
-
-      public TypedColumn getColumn(String name) throws SQLException
-      {
-          checkName(name);
-          checkNotClosed();
-          return values.get(indexMap.get(name).intValue());
-      }
-  */
   public int getConcurrency() throws SQLException {
     checkNotClosed();
     return statement.getResultSetConcurrency();
@@ -509,7 +476,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     checkName(name);
     try {
       if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("float")) {
-        return (double) currentRow.getFloat(name);
+        return currentRow.getFloat(name);
       }
       return currentRow.getDouble(name);
     } catch (InvalidTypeException e) {
@@ -552,12 +519,11 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public int getInt(String name) throws SQLException {
     checkName(name);
-
     return currentRow.getInt(name);
   }
 
 
-  public byte[] getKey() throws SQLException {
+  public byte[] getKey() {
     return curRowKey;
   }
 
@@ -593,7 +559,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     checkIndex(index);
     try {
       if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("int")) {
-        return (long) currentRow.getInt(index - 1);
+        return currentRow.getInt(index - 1);
       } else if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("varint")) {
         return currentRow.getVarint(index - 1).longValue();
       } else {
@@ -610,7 +576,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     checkName(name);
     try {
       if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("int")) {
-        return (long) currentRow.getInt(name);
+        return currentRow.getInt(name);
       } else if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("varint")) {
         return currentRow.getVarint(name).longValue();
       } else {
@@ -624,11 +590,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Map<?, ?> getMap(int index) throws SQLException {
     checkIndex(index);
-    if (currentRow.isNull(index - 1)) {
-      wasNull = true;
-    } else {
-      wasNull = false;
-    }
+    wasNull = currentRow.isNull(index - 1);
     return currentRow.getMap(index - 1, String.class, String.class); // TODO: replace with a real type check
   }
 
@@ -639,44 +601,42 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
   }
 
 
-  public ResultSetMetaData getMetaData() throws SQLException {
+  public ResultSetMetaData getMetaData() {
     return meta;
   }
 
   @SuppressWarnings({"cast", "boxing"})
   public Object getObject(int index) throws SQLException {
     checkIndex(index);
-    List<DataType> datatypes = null;
+    List<DataType> datatypes;
 
     if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("udt")) {
-      return (Object) currentRow.getUDTValue(index - 1);
+      return currentRow.getUDTValue(index - 1);
     }
 
     if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("tuple")) {
-      return (Object) currentRow.getTupleValue(index - 1);
+      return currentRow.getTupleValue(index - 1);
     }
 
     if (currentRow.getColumnDefinitions().getType(index - 1).isCollection()) {
       datatypes = currentRow.getColumnDefinitions().getType(index - 1).getTypeArguments();
       if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("set")) {
         if (datatypes.get(0).getName().toString().equals("udt")) {
-          return (Object) Sets.newLinkedHashSet(currentRow.getSet(index - 1, TypesMap.getTypeForComparator("udt").getType()));
+          return Sets.newLinkedHashSet(currentRow.getSet(index - 1, TypesMap.getTypeForComparator("udt").getType()));
         } else if (datatypes.get(0).getName().toString().equals("tuple")) {
           if (datatypes.get(0).getName().toString().equals("udt")) {
-            return (Object) Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator("udt").getType()));
+            return Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator("udt").getType()));
           } else if (datatypes.get(0).getName().toString().equals("tuple")) {
-            return (Object) Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator("tuple").getType()));
+            return Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator("tuple").getType()));
           } else {
-            return (Object) Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
+            return Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
           }
-
         } else {
-          return (Object) Sets.newLinkedHashSet(currentRow.getSet(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
+          return Sets.newLinkedHashSet(currentRow.getSet(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
         }
-
       }
       if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("list")) {
-        return (Object) Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
+        return Lists.newArrayList(currentRow.getList(index - 1, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
       }
       if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("map")) {
 
@@ -696,48 +656,46 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
         }
 
-        return (Object) Maps.newHashMap(currentRow.getMap(index - 1, keyType, valueType));
+        return Maps.newHashMap(currentRow.getMap(index - 1, keyType, valueType));
       }
 
     } else {
       String typeName = currentRow.getColumnDefinitions().getType(index - 1).getName().toString();
       if (typeName.equals("varchar")) {
-        return (Object) currentRow.getString(index - 1);
+        return currentRow.getString(index - 1);
       } else if (typeName.equals("ascii")) {
-        return (Object) currentRow.getString(index - 1);
+        return currentRow.getString(index - 1);
       } else if (typeName.equals("integer")) {
-        return (Object) currentRow.getInt(index - 1);
+        return currentRow.getInt(index - 1);
       } else if (typeName.equals("bigint")) {
-        return (Object) currentRow.getLong(index - 1);
+        return currentRow.getLong(index - 1);
       } else if (typeName.equals("blob")) {
-        return (Object) currentRow.getBytes(index - 1);
+        return currentRow.getBytes(index - 1);
       } else if (typeName.equals("boolean")) {
-        return (Object) currentRow.getBool(index - 1);
+        return currentRow.getBool(index - 1);
       } else if (typeName.equals("counter")) {
-        return (Object) currentRow.getLong(index - 1);
+        return currentRow.getLong(index - 1);
       } else if (typeName.equals("decimal")) {
-        return (Object) currentRow.getDecimal(index - 1);
+        return currentRow.getDecimal(index - 1);
       } else if (typeName.equals("double")) {
-        return (Object) currentRow.getDouble(index - 1);
+        return currentRow.getDouble(index - 1);
       } else if (typeName.equals("float")) {
-        return (Object) currentRow.getFloat(index - 1);
+        return currentRow.getFloat(index - 1);
       } else if (typeName.equals("inet")) {
-        return (Object) currentRow.getInet(index - 1);
+        return currentRow.getInet(index - 1);
       } else if (typeName.equals("int")) {
-        return (Object) currentRow.getInt(index - 1);
+        return currentRow.getInt(index - 1);
       } else if (typeName.equals("text")) {
-        return (Object) currentRow.getString(index - 1);
+        return currentRow.getString(index - 1);
       } else if (typeName.equals("timestamp")) {
-        return (Object) new Timestamp((currentRow.getTimestamp(index - 1)).getTime());
+        return new Timestamp((currentRow.getTimestamp(index - 1)).getTime());
       } else if (typeName.equals("uuid")) {
-        return (Object) currentRow.getUUID(index - 1);
+        return currentRow.getUUID(index - 1);
       } else if (typeName.equals("timeuuid")) {
-        return (Object) currentRow.getUUID(index - 1);
+        return currentRow.getUUID(index - 1);
       } else if (typeName.equals("varint")) {
-        return (Object) currentRow.getInt(index - 1);
+        return currentRow.getInt(index - 1);
       }
-
-
     }
 
     return null;
@@ -746,34 +704,34 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
   @SuppressWarnings({"cast", "boxing"})
   public Object getObject(String name) throws SQLException {
     checkName(name);
-    List<DataType> datatypes = null;
+    List<DataType> datatypes;
 
     if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("udt")) {
-      return (Object) currentRow.getUDTValue(name);
+      return currentRow.getUDTValue(name);
     }
 
     if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("tuple")) {
-      return (Object) currentRow.getTupleValue(name);
+      return currentRow.getTupleValue(name);
     }
 
     if (currentRow.getColumnDefinitions().getType(name).isCollection()) {
       datatypes = currentRow.getColumnDefinitions().getType(name).getTypeArguments();
       if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("set")) {
         if (datatypes.get(0).getName().toString().equals("udt")) {
-          return (Object) Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator("udt").getType()));
+          return Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator("udt").getType()));
         } else if (datatypes.get(0).getName().toString().equals("tuple")) {
-          return (Object) Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator("tuple").getType()));
+          return Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator("tuple").getType()));
         } else {
-          return (Object) Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
+          return Sets.newLinkedHashSet(currentRow.getSet(name, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
         }
       }
       if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("list")) {
         if (datatypes.get(0).getName().toString().equals("udt")) {
-          return (Object) Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator("udt").getType()));
+          return Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator("udt").getType()));
         } else if (datatypes.get(0).getName().toString().equals("tuple")) {
-          return (Object) Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator("tuple").getType()));
+          return Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator("tuple").getType()));
         } else {
-          return (Object) Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
+          return Lists.newArrayList(currentRow.getList(name, TypesMap.getTypeForComparator(datatypes.get(0).toString()).getType()));
         }
       }
       if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("map")) {
@@ -793,46 +751,46 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
         }
 
-        return (Object) Maps.newHashMap(currentRow.getMap(name, keyType, valueType));
+        return Maps.newHashMap(currentRow.getMap(name, keyType, valueType));
       }
 
     } else {
       String typeName = currentRow.getColumnDefinitions().getType(name).getName().toString();
 
       if (typeName.equals("varchar")) {
-        return (Object) currentRow.getString(name);
+        return currentRow.getString(name);
       } else if (typeName.equals("ascii")) {
-        return (Object) currentRow.getString(name);
+        return currentRow.getString(name);
       } else if (typeName.equals("integer")) {
-        return (Object) currentRow.getInt(name);
+        return currentRow.getInt(name);
       } else if (typeName.equals("bigint")) {
-        return (Object) currentRow.getLong(name);
+        return currentRow.getLong(name);
       } else if (typeName.equals("blob")) {
-        return (Object) currentRow.getBytes(name);
+        return currentRow.getBytes(name);
       } else if (typeName.equals("boolean")) {
-        return (Object) currentRow.getBool(name);
+        return currentRow.getBool(name);
       } else if (typeName.equals("counter")) {
-        return (Object) currentRow.getLong(name);
+        return currentRow.getLong(name);
       } else if (typeName.equals("decimal")) {
-        return (Object) currentRow.getDecimal(name);
+        return currentRow.getDecimal(name);
       } else if (typeName.equals("double")) {
-        return (Object) currentRow.getDouble(name);
+        return currentRow.getDouble(name);
       } else if (typeName.equals("float")) {
-        return (Object) currentRow.getFloat(name);
+        return currentRow.getFloat(name);
       } else if (typeName.equals("inet")) {
-        return (Object) currentRow.getInet(name);
+        return currentRow.getInet(name);
       } else if (typeName.equals("int")) {
-        return (Object) currentRow.getInt(name);
+        return currentRow.getInt(name);
       } else if (typeName.equals("text")) {
-        return (Object) currentRow.getString(name);
+        return currentRow.getString(name);
       } else if (typeName.equals("timestamp")) {
-        return (Object) new Timestamp((currentRow.getTimestamp(name)).getTime());
+        return new Timestamp((currentRow.getTimestamp(name)).getTime());
       } else if (typeName.equals("uuid")) {
-        return (Object) currentRow.getUUID(name);
+        return currentRow.getUUID(name);
       } else if (typeName.equals("timeuuid")) {
-        return (Object) currentRow.getUUID(name);
+        return currentRow.getUUID(name);
       } else if (typeName.equals("varint")) {
-        return (Object) currentRow.getInt(name);
+        return currentRow.getInt(name);
       }
 
     }
@@ -1043,14 +1001,12 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
   }
 
-  public synchronized boolean next() throws SQLException {
+  public synchronized boolean next() {
     if (hasMoreRows()) {
       // populateColumns is called upon init to set up the metadata fields; so skip first call
       if (rowNumber != 0) {
         populateColumns();
       }
-      //else rowsIterator.next();
-// populateColumns();
       rowNumber++;
       return true;
     }
@@ -1116,7 +1072,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
       return statement.connection.getCatalog();
     }
 
-    public String getColumnClassName(int column) throws SQLException {
+    public String getColumnClassName(int column) {
       if (currentRow != null) {
         return DataTypeEnum.fromCqlTypeName(currentRow.getColumnDefinitions().getType(column - 1).getName()).asJavaClass().getCanonicalName();
       }
@@ -1124,7 +1080,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
     }
 
-    public int getColumnCount() throws SQLException {
+    public int getColumnCount() {
       try {
         if (currentRow != null) {
           return currentRow.getColumnDefinitions().size();
@@ -1241,27 +1197,27 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
             throw new SQLFeatureNotSupportedException();
         }*/
 
-    public boolean isAutoIncrement(int column) throws SQLException {
+    public boolean isAutoIncrement(int column) {
       return true;
 //            checkIndex(column);
 //            return values.get(column - 1).getValueType() instanceof JdbcCounterColumn; // todo: check Value is correct.
     }
 
-    public boolean isCaseSensitive(int column) throws SQLException {
+    public boolean isCaseSensitive(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isCaseSensitive();
       return true;
     }
 
-    public boolean isCurrency(int column) throws SQLException {
+    public boolean isCurrency(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isCurrency();
       return false;
     }
 
-    public boolean isDefinitelyWritable(int column) throws SQLException {
+    public boolean isDefinitelyWritable(int column) {
       //checkIndex(column);
       return isWritable(column);
     }
@@ -1269,33 +1225,33 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     /**
      * absence is the equivalent of null in Cassandra
      */
-    public int isNullable(int column) throws SQLException {
+    public int isNullable(int column) {
       //checkIndex(column);
       return ResultSetMetaData.columnNullable;
     }
 
-    public boolean isReadOnly(int column) throws SQLException {
+    public boolean isReadOnly(int column) {
       //checkIndex(column);
       return column == 0;
     }
 
-    public boolean isSearchable(int column) throws SQLException {
+    public boolean isSearchable(int column) {
       //checkIndex(column);
       return false;
     }
 
-    public boolean isSigned(int column) throws SQLException {
+    public boolean isSigned(int column) {
 //            checkIndex(column);
 //            TypedColumn tc = values.get(column - 1);
 //            return tc.getValueType().isSigned();
       return false;
     }
 
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<?> iface) {
       return false;
     }
 
-    public boolean isWritable(int column) throws SQLException {
+    public boolean isWritable(int column) {
       //checkIndex(column);
       return column > 0;
     }
@@ -1305,7 +1261,7 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     }
 
     @Override
-    public String getTableName(int column) throws SQLException {
+    public String getTableName(int column) {
       String tableName = "";
       if (currentRow != null) {
         tableName = currentRow.getColumnDefinitions().getTable(column - 1);
@@ -1314,19 +1270,17 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
       }
       return tableName;
     }
-
-
   }
 
 
   @Override
-  public RowId getRowId(int columnIndex) throws SQLException {
+  public RowId getRowId(int columnIndex) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public RowId getRowId(String columnLabel) throws SQLException {
+  public RowId getRowId(String columnLabel) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -1350,31 +1304,15 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     return new ByteArrayInputStream(bytes);
   }
 
-  private boolean hasNextIterator() {
-    return currentIteratorIndex < rowsIterators.size() - 1;
-  }
-
-  private boolean nextIterator() {
-    try {
-      currentIteratorIndex++;
-      rowsIterator = rowsIterators.get(currentIteratorIndex);
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
-  }
-
   @Override
   public Blob getBlob(int index) throws SQLException {
     checkIndex(index);
-
     return new javax.sql.rowset.serial.SerialBlob(currentRow.getBytes(index - 1).array());
   }
 
   @Override
   public Blob getBlob(String columnName) throws SQLException {
     checkName(columnName);
-
     return new javax.sql.rowset.serial.SerialBlob(currentRow.getBytes(columnName).array());
   }
 
