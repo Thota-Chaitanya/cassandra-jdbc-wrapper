@@ -17,50 +17,41 @@ package com.github.adejanovski.cassandra.jdbc;
 import java.sql.Types;
 import java.util.UUID;
 
-public abstract class AbstractJdbcUUID extends AbstractJdbcType<UUID>
-{
-    public String toString(UUID obj)
-    {
-        return obj.toString();
-    }
+public abstract class AbstractJdbcUUID extends AbstractJdbcType<UUID> {
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  public String toString(UUID obj) {
+    return obj.toString();
+  }
 
-    public int getScale(UUID obj)
-    {
-        return -1;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getPrecision(UUID obj)
-    {
-        return -1;
-    }
+  public int getScale(UUID obj) {
+    return -1;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(UUID obj) {
+    return -1;
+  }
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public boolean isSigned() {
+    return false;
+  }
 
-    public Class<UUID> getType()
-    {
-        return UUID.class;
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.OTHER;
-    }
+  public Class<UUID> getType() {
+    return UUID.class;
+  }
+
+  public int getJdbcType() {
+    return Types.OTHER;
+  }
 }

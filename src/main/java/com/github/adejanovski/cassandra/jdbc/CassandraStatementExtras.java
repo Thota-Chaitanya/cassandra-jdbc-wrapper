@@ -14,13 +14,12 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
+import com.datastax.driver.core.ConsistencyLevel;
 import java.sql.Statement;
 
-import com.datastax.driver.core.ConsistencyLevel;
+public interface CassandraStatementExtras extends Statement {
 
-public interface CassandraStatementExtras extends Statement
-{
-    public void setConsistencyLevel(ConsistencyLevel consistencyLevel);
-    
-    public ConsistencyLevel getConsistencyLevel();
+  public void setConsistencyLevel(ConsistencyLevel consistencyLevel);
+
+  public ConsistencyLevel getConsistencyLevel();
 }

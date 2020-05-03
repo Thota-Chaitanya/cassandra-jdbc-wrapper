@@ -18,73 +18,61 @@ import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
+public class JdbcBytes extends AbstractJdbcType<ByteBuffer> {
 
-public class JdbcBytes extends AbstractJdbcType<ByteBuffer>
-{
-    public static final JdbcBytes instance = new JdbcBytes();
+  public static final JdbcBytes instance = new JdbcBytes();
 
-    JdbcBytes() {}
+  JdbcBytes() {
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getScale(ByteBuffer obj)
-    {
-        return -1;
-    }
+  public int getScale(ByteBuffer obj) {
+    return -1;
+  }
 
-    public int getPrecision(ByteBuffer obj)
-    {
-        return -1;
-    }
+  public int getPrecision(ByteBuffer obj) {
+    return -1;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  public boolean isSigned() {
+    return false;
+  }
 
-    public String toString(ByteBuffer obj)
-    {
-        return "";
-    }
+  public String toString(ByteBuffer obj) {
+    return "";
+  }
 
-    public boolean needsQuotes()
-    {
-        return true;
-    }
+  public boolean needsQuotes() {
+    return true;
+  }
 
-    
 
-    public Class<ByteBuffer> getType()
-    {
-        return ByteBuffer.class;
-    }
+  public Class<ByteBuffer> getType() {
+    return ByteBuffer.class;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.BINARY;
-    }
+  public int getJdbcType() {
+    return Types.BINARY;
+  }
 
-    public ByteBuffer compose(ByteBuffer bytes)
-    {
-        return bytes.duplicate();
-    }
+  public ByteBuffer compose(ByteBuffer bytes) {
+    return bytes.duplicate();
+  }
 
-    public ByteBuffer decompose(ByteBuffer value)
-    {
-        return value;
-    }
+  public ByteBuffer decompose(ByteBuffer value) {
+    return value;
+  }
 
-	@Override
-	public ByteBuffer compose(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public ByteBuffer compose(Object obj) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

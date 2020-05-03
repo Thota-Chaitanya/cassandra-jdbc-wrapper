@@ -18,47 +18,42 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 
+public class JdbcUUID extends AbstractJdbcUUID {
 
-public class JdbcUUID extends AbstractJdbcUUID
-{
-    public static final JdbcUUID instance = new JdbcUUID();
+  public static final JdbcUUID instance = new JdbcUUID();
 
-    JdbcUUID() {}
+  JdbcUUID() {
+  }
 
-    public UUID compose(ByteBuffer bytes)
-    {
-        bytes = bytes.slice();
-        if (bytes.remaining() < 16)
-            return new UUID(0, 0);
-        return new UUID(bytes.getLong(), bytes.getLong());
+  public UUID compose(ByteBuffer bytes) {
+    bytes = bytes.slice();
+      if (bytes.remaining() < 16) {
+          return new UUID(0, 0);
+      }
+    return new UUID(bytes.getLong(), bytes.getLong());
+  }
+
+  public String getString(ByteBuffer bytes) {
+    if (bytes.remaining() == 0) {
+      return "";
+    }
+    if (bytes.remaining() != 16) {
+      throw new MarshalException("UUIDs must be exactly 16 bytes");
     }
 
-    public String getString(ByteBuffer bytes)
-    {
-        if (bytes.remaining() == 0)
-        {
-            return "";
-        }
-        if (bytes.remaining() != 16)
-        {
-            throw new MarshalException("UUIDs must be exactly 16 bytes");
-        }
+    return compose(bytes).toString();
+  }
 
-        return compose(bytes).toString();
-    }
-    
-    public UUID compose(Object obj)
-    {
-        return UUID.fromString(obj.toString());
-    }
+  public UUID compose(Object obj) {
+    return UUID.fromString(obj.toString());
+  }
 
 
-	@Override
-	public Object decompose(UUID obj) {
-		// TODO Auto-generated method stub
-		return (Object)obj;
-	}
+  @Override
+  public Object decompose(UUID obj) {
+    // TODO Auto-generated method stub
+    return (Object) obj;
+  }
 
 
-	
 }

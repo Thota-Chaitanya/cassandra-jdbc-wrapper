@@ -14,78 +14,64 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 import java.sql.Types;
 
 
-public class JdbcOther extends AbstractJdbcType<String>
-{    
-    public static final JdbcOther instance = new JdbcOther();
+public class JdbcOther extends AbstractJdbcType<String> {
 
-    JdbcOther() {}
+  public static final JdbcOther instance = new JdbcOther();
 
-    public boolean isCaseSensitive()
-    {
-        return true;
-    }
+  JdbcOther() {
+  }
 
-    public int getScale(String obj)
-    {
-        return -1;
-    }
+  public boolean isCaseSensitive() {
+    return true;
+  }
 
-    public int getPrecision(String obj)
-    {
-        return -1;
-    }
+  public int getScale(String obj) {
+    return -1;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(String obj) {
+    return -1;
+  }
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(String obj)
-    {
-        return obj;
-    }
+  public boolean isSigned() {
+    return false;
+  }
 
-    public boolean needsQuotes()
-    {
-        return true;
-    }
+  public String toString(String obj) {
+    return obj;
+  }
 
-    public String getString(Object obj)
-    {
-            return obj.toString();
-        
-    }
+  public boolean needsQuotes() {
+    return true;
+  }
 
-    public Class<String> getType()
-    {
-        return String.class;
-    }
+  public String getString(Object obj) {
+    return obj.toString();
 
-    public int getJdbcType()
-    {
-        return Types.OTHER;
-    }
+  }
 
-    public String compose(Object obj)
-    {
-        return obj.toString();
-    }
+  public Class<String> getType() {
+    return String.class;
+  }
 
-    public Object decompose(String value)
-    {
-        return (Object) value;
-    }
+  public int getJdbcType() {
+    return Types.OTHER;
+  }
 
-	
+  public String compose(Object obj) {
+    return obj.toString();
+  }
+
+  public Object decompose(String value) {
+    return (Object) value;
+  }
+
+
 }

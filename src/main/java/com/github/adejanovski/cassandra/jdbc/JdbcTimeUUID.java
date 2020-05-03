@@ -14,16 +14,15 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
 
 
+public class JdbcTimeUUID extends AbstractJdbcUUID {
 
-public class JdbcTimeUUID extends AbstractJdbcUUID
-{
-    public static final JdbcTimeUUID instance = new JdbcTimeUUID();
+  public static final JdbcTimeUUID instance = new JdbcTimeUUID();
 
-    JdbcTimeUUID() {}
+  JdbcTimeUUID() {
+  }
 
     /* public String getString(ByteBuffer bytes)
     {
@@ -43,13 +42,11 @@ public class JdbcTimeUUID extends AbstractJdbcUUID
         return uuid.toString();
     }*/
 
-    public UUID compose(Object obj)
-    {
-        return UUID.fromString(obj.toString());
-    }
+  public UUID compose(Object obj) {
+    return UUID.fromString(obj.toString());
+  }
 
-    public Object decompose(UUID value)
-    {
-        return (Object)(value.toString());
-    }
+  public Object decompose(UUID value) {
+    return (Object) (value.toString());
+  }
 }

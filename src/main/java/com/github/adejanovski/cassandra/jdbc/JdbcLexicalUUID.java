@@ -14,24 +14,22 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
 
 
-public class JdbcLexicalUUID extends AbstractJdbcUUID
-{
-    public static final JdbcLexicalUUID instance = new JdbcLexicalUUID();
+public class JdbcLexicalUUID extends AbstractJdbcUUID {
 
-    public JdbcLexicalUUID() {}
+  public static final JdbcLexicalUUID instance = new JdbcLexicalUUID();
 
-    
-    public UUID compose(Object obj)
-    {    	
-        return UUID.fromString(obj.toString());
-    }
+  public JdbcLexicalUUID() {
+  }
 
-    public Object decompose(UUID value)
-    {
-        return (Object)value.toString();
-    }
+
+  public UUID compose(Object obj) {
+    return UUID.fromString(obj.toString());
+  }
+
+  public Object decompose(UUID value) {
+    return (Object) value.toString();
+  }
 }

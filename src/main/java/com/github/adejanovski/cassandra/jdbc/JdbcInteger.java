@@ -15,71 +15,58 @@
 package com.github.adejanovski.cassandra.jdbc;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
+public class JdbcInteger extends AbstractJdbcType<BigInteger> {
 
-public class JdbcInteger extends AbstractJdbcType<BigInteger>
-{
-    public static final JdbcInteger instance = new JdbcInteger();
+  public static final JdbcInteger instance = new JdbcInteger();
 
-    JdbcInteger() {}
+  JdbcInteger() {
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getScale(BigInteger obj)
-    {
-        return 0;
-    }
+  public int getScale(BigInteger obj) {
+    return 0;
+  }
 
-    public int getPrecision(BigInteger obj)
-    {
-        return obj.toString().length();
-    }
+  public int getPrecision(BigInteger obj) {
+    return obj.toString().length();
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public String toString(BigInteger obj)
-    {
-        return obj.toString();
-    }
+  public String toString(BigInteger obj) {
+    return obj.toString();
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-   
 
-    public Class<BigInteger> getType()
-    {
-        return BigInteger.class;
-    }
+  public Class<BigInteger> getType() {
+    return BigInteger.class;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.BIGINT;
-    }
+  public int getJdbcType() {
+    return Types.BIGINT;
+  }
 
-    public BigInteger compose(Object obj)
-    {
-        return (BigInteger)obj;
-    }
+  public BigInteger compose(Object obj) {
+    return (BigInteger) obj;
+  }
 
-    public Object decompose(BigInteger value)
-    {
-        return (Object)value;
-    }
+  public Object decompose(BigInteger value) {
+    return (Object) value;
+  }
 }

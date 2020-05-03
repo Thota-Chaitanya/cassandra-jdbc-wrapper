@@ -14,69 +14,58 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
-public class JdbcDouble extends AbstractJdbcType<Double>
-{
-    public static final JdbcDouble instance = new JdbcDouble();
+public class JdbcDouble extends AbstractJdbcType<Double> {
 
-    JdbcDouble() {}
+  public static final JdbcDouble instance = new JdbcDouble();
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  JdbcDouble() {
+  }
 
-    public int getScale(Double obj)
-    {
-        return 300;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getPrecision(Double obj)
-    {
-        return 15;
-    }
+  public int getScale(Double obj) {
+    return 300;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(Double obj) {
+    return 15;
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(Double obj)
-    {
-        return obj.toString();
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public String toString(Double obj) {
+    return obj.toString();
+  }
+
+  public boolean needsQuotes() {
+    return false;
+  }
 
 
-    public Class<Double> getType()
-    {
-        return Double.class;
-    }
+  public Class<Double> getType() {
+    return Double.class;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.DOUBLE;
-    }
+  public int getJdbcType() {
+    return Types.DOUBLE;
+  }
 
-    public Double compose(Object value)
-    {
-        return (Double)value;
-    }
+  public Double compose(Object value) {
+    return (Double) value;
+  }
 
-    public Object decompose(Double value)
-    {
-        return (value==null) ? null : (Object)value;
-    }
+  public Object decompose(Double value) {
+    return (value == null) ? null : (Object) value;
+  }
 }

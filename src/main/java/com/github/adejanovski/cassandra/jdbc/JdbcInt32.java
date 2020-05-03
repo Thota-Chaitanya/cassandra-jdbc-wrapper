@@ -14,72 +14,58 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
+public class JdbcInt32 extends AbstractJdbcType<Integer> {
 
-public class JdbcInt32 extends AbstractJdbcType<Integer>
-{
-    public static final JdbcInt32 instance = new JdbcInt32();
+  public static final JdbcInt32 instance = new JdbcInt32();
 
-    JdbcInt32()
-    {
-    }
+  JdbcInt32() {
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getScale(Integer obj)
-    {
-        return 0;
-    }
+  public int getScale(Integer obj) {
+    return 0;
+  }
 
-    public int getPrecision(Integer obj)
-    {
-        return obj.toString().length();
-    }
+  public int getPrecision(Integer obj) {
+    return obj.toString().length();
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public String toString(Integer obj)
-    {
-        return obj.toString();
-    }
+  public String toString(Integer obj) {
+    return obj.toString();
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-   
-    public Class<Integer> getType()
-    {
-        return Integer.class;
-    }
 
-    public int getJdbcType()
-    {
-        return Types.INTEGER;
-    }
+  public Class<Integer> getType() {
+    return Integer.class;
+  }
 
-    public Integer compose(Object value)
-    {
-        return (Integer)value;
-    }
+  public int getJdbcType() {
+    return Types.INTEGER;
+  }
 
-    public Object decompose(Integer value)
-    {
-        return (Object)value;
-    }
+  public Integer compose(Object value) {
+    return (Integer) value;
+  }
+
+  public Object decompose(Integer value) {
+    return (Object) value;
+  }
 }

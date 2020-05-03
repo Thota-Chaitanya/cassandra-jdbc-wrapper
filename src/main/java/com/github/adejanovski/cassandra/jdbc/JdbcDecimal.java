@@ -15,81 +15,72 @@
 package com.github.adejanovski.cassandra.jdbc;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.sql.Types;
 
 
-public class JdbcDecimal extends AbstractJdbcType<BigDecimal>
-{
-    public static final JdbcDecimal instance = new JdbcDecimal();
+public class JdbcDecimal extends AbstractJdbcType<BigDecimal> {
 
-    JdbcDecimal() {}
+  public static final JdbcDecimal instance = new JdbcDecimal();
 
-    public boolean isCaseSensitive()
-    {
-        return false;
-    }
+  JdbcDecimal() {
+  }
 
-    public int getScale(BigDecimal obj)
-    {
-        return obj.scale();
-    }
+  public boolean isCaseSensitive() {
+    return false;
+  }
 
-    public int getPrecision(BigDecimal obj)
-    {
-        return obj.precision();
-    }
+  public int getScale(BigDecimal obj) {
+    return obj.scale();
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public int getPrecision(BigDecimal obj) {
+    return obj.precision();
+  }
 
-    public boolean isSigned()
-    {
-        return true;
-    }
+  public boolean isCurrency() {
+    return false;
+  }
 
-    public String toString(BigDecimal obj)
-    {
-        return obj.toPlainString();
-    }
+  public boolean isSigned() {
+    return true;
+  }
 
-    public boolean needsQuotes()
-    {
-        return false;
-    }
+  public String toString(BigDecimal obj) {
+    return obj.toPlainString();
+  }
 
-    public String getString(ByteBuffer bytes)
-    {
-        if (bytes == null) return "null";
-        if (bytes.remaining() == 0) return "empty";
-        return compose(bytes).toPlainString();
-    }
+  public boolean needsQuotes() {
+    return false;
+  }
 
-    public Class<BigDecimal> getType()
-    {
-        return BigDecimal.class;
-    }
+  public String getString(ByteBuffer bytes) {
+      if (bytes == null) {
+          return "null";
+      }
+      if (bytes.remaining() == 0) {
+          return "empty";
+      }
+    return compose(bytes).toPlainString();
+  }
 
-    public int getJdbcType()
-    {
-        return Types.DECIMAL;
-    }
+  public Class<BigDecimal> getType() {
+    return BigDecimal.class;
+  }
 
-    public BigDecimal compose(Object value)
-    {        
-        return (BigDecimal)value;
-    }
+  public int getJdbcType() {
+    return Types.DECIMAL;
+  }
 
-    /**
-     * The bytes of the ByteBuffer are made up of 4 bytes of int containing the scale
-     * followed by the n bytes it takes to store a BigInteger.
-     */
-    public Object decompose(BigDecimal value)
-    {        
-        return (Object)value;
-    }
+  public BigDecimal compose(Object value) {
+    return (BigDecimal) value;
+  }
+
+  /**
+   * The bytes of the ByteBuffer are made up of 4 bytes of int containing the scale followed by the n bytes it takes to store a BigInteger.
+   */
+  public Object decompose(BigDecimal value) {
+    return (Object) value;
+  }
 
 }

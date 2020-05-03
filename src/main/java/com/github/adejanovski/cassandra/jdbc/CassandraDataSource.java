@@ -35,197 +35,187 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.Properties;
 import java.util.logging.Logger;
-
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
 
-public class CassandraDataSource implements ConnectionPoolDataSource, DataSource
-{
+public class CassandraDataSource implements ConnectionPoolDataSource, DataSource {
 
-    static
-    {
-        try
-        {
-            Class.forName("com.github.adejanovski.cassandra.jdbc.CassandraDriver");
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
+  static {
+    try {
+      Class.forName("com.github.adejanovski.cassandra.jdbc.CassandraDriver");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    protected static final String description = "Cassandra Data Source";
+  protected static final String description = "Cassandra Data Source";
 
-    protected String serverName;
+  protected String serverName;
 
-    protected int    portNumber = 9042;
+  protected int portNumber = 9042;
 
-    protected String databaseName;
+  protected String databaseName;
 
-    protected String user;
+  protected String user;
 
-    protected String password;
+  protected String password;
 
-    protected String version = null;
-    
-    protected String consistency = null;
+  protected String version = null;
 
-    public CassandraDataSource(String host, int port, String keyspace, String user, String password, String version, String consistency)
-    {
-        if (host != null) setServerName(host);
-        if (port != -1) setPortNumber(port);
-        if (version != null) setVersion(version);
-        if (consistency != null) setConsistency(consistency);
-        setDatabaseName(keyspace);
-        setUser(user);
-        setPassword(password);
-    }
+  protected String consistency = null;
 
-    public String getDescription()
-    {
-        return description;
-    }
+  public CassandraDataSource(String host, int port, String keyspace, String user, String password, String version, String consistency) {
+      if (host != null) {
+          setServerName(host);
+      }
+      if (port != -1) {
+          setPortNumber(port);
+      }
+      if (version != null) {
+          setVersion(version);
+      }
+      if (consistency != null) {
+          setConsistency(consistency);
+      }
+    setDatabaseName(keyspace);
+    setUser(user);
+    setPassword(password);
+  }
 
-    public String getServerName()
-    {
-        return serverName;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public void setServerName(String serverName)
-    {
-        this.serverName = serverName;
-    }
+  public String getServerName() {
+    return serverName;
+  }
 
-    public String getVersion()
-    {
-        return version;
-    }
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
+  }
 
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public String getConsistency()
-    {
-        return consistency;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-    public void setConsistency(String consistency)
-    {
-        this.consistency = consistency;
-    }
+  public String getConsistency() {
+    return consistency;
+  }
 
-    public int getPortNumber()
-    {
-        return portNumber;
-    }
+  public void setConsistency(String consistency) {
+    this.consistency = consistency;
+  }
 
-    public void setPortNumber(int portNumber)
-    {
-        this.portNumber = portNumber;
-    }
+  public int getPortNumber() {
+    return portNumber;
+  }
 
-    public String getDatabaseName()
-    {
-        return databaseName;
-    }
+  public void setPortNumber(int portNumber) {
+    this.portNumber = portNumber;
+  }
 
-    public void setDatabaseName(String databaseName)
-    {
-        this.databaseName = databaseName;
-    }
+  public String getDatabaseName() {
+    return databaseName;
+  }
 
-    public String getUser()
-    {
-        return user;
-    }
+  public void setDatabaseName(String databaseName) {
+    this.databaseName = databaseName;
+  }
 
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
+  public String getUser() {
+    return user;
+  }
 
-    public String getPassword()
-    {
-        return password;
-    }
+  public void setUser(String user) {
+    this.user = user;
+  }
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public CassandraConnection getConnection() throws SQLException
-    {
-        return getConnection(null, null);
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public CassandraConnection getConnection(String user, String password) throws SQLException
-    {
-        Properties props = new Properties();
-        
-        this.user = user;
-        this.password = password;
-        
-        if (this.serverName!=null) props.setProperty(TAG_SERVER_NAME, this.serverName);
-        else throw new SQLNonTransientConnectionException(HOST_REQUIRED);
-        props.setProperty(TAG_PORT_NUMBER, ""+this.portNumber);
-        if (this.databaseName!=null) props.setProperty(TAG_DATABASE_NAME, this.databaseName);
-        if (user!=null) props.setProperty(TAG_USER, user);
-        if (password!=null) props.setProperty(TAG_PASSWORD, password);
-        if (this.version != null) props.setProperty(TAG_CQL_VERSION, version);
-        if (this.consistency != null) props.setProperty(TAG_CONSISTENCY_LEVEL, consistency);
+  public CassandraConnection getConnection() throws SQLException {
+    return getConnection(null, null);
+  }
 
-        String url = PROTOCOL+createSubName(props);
-        return (CassandraConnection) DriverManager.getConnection(url, props);
-    }
+  public CassandraConnection getConnection(String user, String password) throws SQLException {
+    Properties props = new Properties();
 
-    public int getLoginTimeout()
-    {
-        return DriverManager.getLoginTimeout();
-    }
+    this.user = user;
+    this.password = password;
 
-    public PrintWriter getLogWriter()
-    {
-        return DriverManager.getLogWriter();
-    }
+      if (this.serverName != null) {
+          props.setProperty(TAG_SERVER_NAME, this.serverName);
+      } else {
+          throw new SQLNonTransientConnectionException(HOST_REQUIRED);
+      }
+    props.setProperty(TAG_PORT_NUMBER, "" + this.portNumber);
+      if (this.databaseName != null) {
+          props.setProperty(TAG_DATABASE_NAME, this.databaseName);
+      }
+      if (user != null) {
+          props.setProperty(TAG_USER, user);
+      }
+      if (password != null) {
+          props.setProperty(TAG_PASSWORD, password);
+      }
+      if (this.version != null) {
+          props.setProperty(TAG_CQL_VERSION, version);
+      }
+      if (this.consistency != null) {
+          props.setProperty(TAG_CONSISTENCY_LEVEL, consistency);
+      }
 
-    public void setLoginTimeout(int timeout)
-    {
-        DriverManager.setLoginTimeout(timeout);
-    }
+    String url = PROTOCOL + createSubName(props);
+    return (CassandraConnection) DriverManager.getConnection(url, props);
+  }
 
-    public void setLogWriter(PrintWriter writer)
-    {
-        DriverManager.setLogWriter(writer);
-    }
+  public int getLoginTimeout() {
+    return DriverManager.getLoginTimeout();
+  }
 
-    public boolean isWrapperFor(Class<?> iface)
-    {
-        return iface.isAssignableFrom(getClass());
-    }
+  public PrintWriter getLogWriter() {
+    return DriverManager.getLogWriter();
+  }
 
-    public <T> T unwrap(Class<T> iface) throws SQLException
-    {
-        if (iface.isAssignableFrom(getClass())) return iface.cast(this);
-        throw new SQLFeatureNotSupportedException(String.format(NO_INTERFACE, iface.getSimpleName()));
-    }  
-    
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException
-    {
-    	throw new SQLFeatureNotSupportedException(String.format(NOT_SUPPORTED));
-    }
+  public void setLoginTimeout(int timeout) {
+    DriverManager.setLoginTimeout(timeout);
+  }
 
-	@Override
-	public PooledCassandraConnection getPooledConnection() throws SQLException
-	{
-		return new PooledCassandraConnection(getConnection());
-	}
+  public void setLogWriter(PrintWriter writer) {
+    DriverManager.setLogWriter(writer);
+  }
 
-	@Override
-	public PooledCassandraConnection getPooledConnection(String user, String password) throws SQLException
-	{
-		return new PooledCassandraConnection(getConnection(user, password));
-	}
+  public boolean isWrapperFor(Class<?> iface) {
+    return iface.isAssignableFrom(getClass());
+  }
+
+  public <T> T unwrap(Class<T> iface) throws SQLException {
+      if (iface.isAssignableFrom(getClass())) {
+          return iface.cast(this);
+      }
+    throw new SQLFeatureNotSupportedException(String.format(NO_INTERFACE, iface.getSimpleName()));
+  }
+
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    throw new SQLFeatureNotSupportedException(String.format(NOT_SUPPORTED));
+  }
+
+  @Override
+  public PooledCassandraConnection getPooledConnection() throws SQLException {
+    return new PooledCassandraConnection(getConnection());
+  }
+
+  @Override
+  public PooledCassandraConnection getPooledConnection(String user, String password) throws SQLException {
+    return new PooledCassandraConnection(getConnection(user, password));
+  }
 }

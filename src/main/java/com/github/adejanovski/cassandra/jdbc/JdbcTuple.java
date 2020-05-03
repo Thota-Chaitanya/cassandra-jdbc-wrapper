@@ -14,91 +14,76 @@
  */
 package com.github.adejanovski.cassandra.jdbc;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
+import com.datastax.driver.core.TupleValue;
 import java.sql.Types;
 
-import com.datastax.driver.core.TupleValue;
-import com.datastax.driver.core.UDTValue;
+
+public class JdbcTuple extends AbstractJdbcType<TupleValue> {
+
+  public static final JdbcTuple instance = new JdbcTuple();
+
+  JdbcTuple() {
+  }
+
+  public boolean isCaseSensitive() {
+    return true;
+  }
 
 
-public class JdbcTuple extends AbstractJdbcType<TupleValue>
-{    
-    public static final JdbcTuple instance = new JdbcTuple();
+  public boolean isCurrency() {
+    return false;
+  }
 
-    JdbcTuple() {}
+  public boolean isSigned() {
+    return false;
+  }
 
-    public boolean isCaseSensitive()
-    {
-        return true;
-    }
+  public String toString(String obj) {
+    return obj;
+  }
 
-    
+  public boolean needsQuotes() {
+    return true;
+  }
 
-    public boolean isCurrency()
-    {
-        return false;
-    }
+  public String getString(Object obj) {
+    return obj.toString();
 
-    public boolean isSigned()
-    {
-        return false;
-    }
+  }
 
-    public String toString(String obj)
-    {
-        return obj;
-    }
+  public Class<TupleValue> getType() {
+    return TupleValue.class;
+  }
 
-    public boolean needsQuotes()
-    {
-        return true;
-    }
+  public int getJdbcType() {
+    return Types.OTHER;
+  }
 
-    public String getString(Object obj)
-    {
-            return obj.toString();
-        
-    }
+  public TupleValue compose(Object obj) {
+    return (TupleValue) obj;
+  }
 
-    public Class<TupleValue> getType()
-    {
-        return TupleValue.class;
-    }
+  public Object decompose(TupleValue value) {
+    return (Object) value;
+  }
 
-    public int getJdbcType()
-    {
-        return Types.OTHER;
-    }
+  @Override
+  public int getScale(TupleValue obj) {
+    // TODO Auto-generated method stub
+    return -1;
+  }
 
-    public TupleValue compose(Object obj)
-    {
-        return (TupleValue)obj;
-    }
+  @Override
+  public int getPrecision(TupleValue obj) {
+    // TODO Auto-generated method stub
+    return -1;
+  }
 
-    public Object decompose(TupleValue value)
-    {
-        return (Object) value;
-    }
+  @Override
+  public String toString(TupleValue obj) {
+    // TODO Auto-generated method stub
+    return obj.toString();
+  }
 
-	@Override
-	public int getScale(TupleValue obj) {
-		// TODO Auto-generated method stub
-		return -1;
-	}
 
-	@Override
-	public int getPrecision(TupleValue obj) {
-		// TODO Auto-generated method stub
-		return -1;
-	}
-
-	@Override
-	public String toString(TupleValue obj) {
-		// TODO Auto-generated method stub
-		return obj.toString();
-	}
-
-	
 }

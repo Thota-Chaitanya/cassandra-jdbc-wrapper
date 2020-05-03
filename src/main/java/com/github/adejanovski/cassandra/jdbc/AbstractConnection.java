@@ -25,111 +25,91 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Struct;
-import java.util.concurrent.Executor;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
-abstract class AbstractConnection
-{
-    protected static final String NOT_SUPPORTED = "the Cassandra implementation does not support this method";
+abstract class AbstractConnection {
 
-    public Array createArrayOf(String arg0, Object[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  protected static final String NOT_SUPPORTED = "the Cassandra implementation does not support this method";
 
-    public Blob createBlob() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public Array createArrayOf(String arg0, Object[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public Clob createClob() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public Blob createBlob() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public NClob createNClob() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public Clob createClob() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public SQLXML createSQLXML() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public NClob createNClob() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public Struct createStruct(String arg0, Object[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public SQLXML createSQLXML() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    
-    
-    public CallableStatement prepareCall(String arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    public CallableStatement prepareCall(String arg0, int arg1, int arg2) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public Struct createStruct(String arg0, Object[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public CallableStatement prepareCall(String arg0, int arg1, int arg2, int arg3) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
 
-    public PreparedStatement prepareStatement(String arg0, int arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public CallableStatement prepareCall(String arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public PreparedStatement prepareStatement(String arg0, int[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public CallableStatement prepareCall(String arg0, int arg1, int arg2) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public PreparedStatement prepareStatement(String arg0, String[] arg1) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public CallableStatement prepareCall(String arg0, int arg1, int arg2, int arg3) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void releaseSavepoint(Savepoint arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public PreparedStatement prepareStatement(String arg0, int arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void rollback(Savepoint arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public PreparedStatement prepareStatement(String arg0, int[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public Savepoint setSavepoint() throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    public Savepoint setSavepoint(String arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException
-    {
-        throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
-    
-    public void abort(Executor executor) throws SQLException
-    {
-    	throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public PreparedStatement prepareStatement(String arg0, String[] arg1) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException
-    {
-    	throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void releaseSavepoint(Savepoint arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 
-    public int getNetworkTimeout() throws SQLException
-    {
-    	throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
-    }
+  public void rollback(Savepoint arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public Savepoint setSavepoint() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public Savepoint setSavepoint(String arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void abort(Executor executor) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
+
+  public int getNetworkTimeout() throws SQLException {
+    throw new SQLFeatureNotSupportedException(NOT_SUPPORTED);
+  }
 }
