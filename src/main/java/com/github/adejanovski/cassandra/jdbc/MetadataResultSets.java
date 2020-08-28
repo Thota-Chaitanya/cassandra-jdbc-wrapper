@@ -181,6 +181,9 @@ public class MetadataResultSets {
 								if (jtype instanceof JdbcLong) {
 									length = 8;
 								}
+                if (jtype instanceof JdbcSmallInt) {
+                  length = 4;
+                }
 
                 //NUM_PREC_RADIX
                 int npr = 2;

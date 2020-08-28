@@ -61,6 +61,7 @@ public class TypesMap {
     map.put("org.apache.cassandra.db.marshal.varint", JdbcInteger.instance);
     map.put("org.apache.cassandra.db.marshal.udt", JdbcUdt.instance);
     map.put("org.apache.cassandra.db.marshal.tuple", JdbcTuple.instance);
+    map.put("org.apache.cassandra.db.marshal.smallint", JdbcSmallInt.instance);
   }
 
   public static AbstractJdbcType<?> getTypeForComparator(String comparator) {

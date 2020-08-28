@@ -50,6 +50,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -434,11 +435,23 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     if (currentRow.getDate(index - 1) == null) {
       return null;
     }
+
+    if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("date")) {
+      String localTimeAsString = currentRow.getString(index - 1);
+      return localTimeAsString == null ? null : Date.valueOf(localTimeAsString);
+    }
+
     return new java.sql.Date(currentRow.getTimestamp(index - 1).getTime());
   }
 
   public Date getDate(int index, Calendar calendar) throws SQLException {
     checkIndex(index);
+
+    if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("date")) {
+      String localTimeAsString = currentRow.getString(index - 1);
+      return localTimeAsString == null ? null : Date.valueOf(localTimeAsString);
+    }
+
     // silently ignore the Calendar argument; its a hint we do not need
     return getDate(index - 1);
   }
@@ -448,11 +461,23 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     if (currentRow.getDate(name) == null) {
       return null;
     }
+
+    if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("date")) {
+      String localTimeAsString = currentRow.getString(name);
+      return localTimeAsString == null ? null : Date.valueOf(localTimeAsString);
+    }
+
     return new java.sql.Date(currentRow.getTimestamp(name).getTime());
   }
 
   public Date getDate(String name, Calendar calendar) throws SQLException {
     checkName(name);
+
+    if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("date")) {
+      String localTimeAsString = currentRow.getString(name);
+      return localTimeAsString == null ? null : Date.valueOf(localTimeAsString);
+    }
+
     // silently ignore the Calendar argument; its a hint we do not need
     return getDate(name);
   }
@@ -513,12 +538,18 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public int getInt(int index) throws SQLException {
     checkIndex(index);
+    if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("smallint")) {
+      return currentRow.getShort(index - 1);
+    }
     return currentRow.getInt(index - 1);
 
   }
 
   public int getInt(String name) throws SQLException {
     checkName(name);
+    if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("smallint")) {
+      return currentRow.getShort(name);
+    }
     return currentRow.getInt(name);
   }
 
@@ -688,7 +719,11 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
       } else if (typeName.equals("text")) {
         return currentRow.getString(index - 1);
       } else if (typeName.equals("timestamp")) {
-        return new Timestamp((currentRow.getTimestamp(index - 1)).getTime());
+        if (currentRow == null) {
+          return null;
+        }
+        java.util.Date date = currentRow.getTimestamp(index - 1);
+        return date == null ? null : new Timestamp(date.getTime());
       } else if (typeName.equals("uuid")) {
         return currentRow.getUUID(index - 1);
       } else if (typeName.equals("timeuuid")) {
@@ -740,7 +775,6 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
           keyType = TypesMap.getTypeForComparator("udt").getType();
         } else if (datatypes.get(0).getName().toString().equals("tuple")) {
           keyType = TypesMap.getTypeForComparator("tuple").getType();
-
         }
 
         Class<?> valueType = TypesMap.getTypeForComparator(datatypes.get(1).toString()).getType();
@@ -757,42 +791,42 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
     } else {
       String typeName = currentRow.getColumnDefinitions().getType(name).getName().toString();
 
-      if (typeName.equals("varchar")) {
-        return currentRow.getString(name);
-      } else if (typeName.equals("ascii")) {
-        return currentRow.getString(name);
-      } else if (typeName.equals("integer")) {
-        return currentRow.getInt(name);
-      } else if (typeName.equals("bigint")) {
-        return currentRow.getLong(name);
-      } else if (typeName.equals("blob")) {
-        return currentRow.getBytes(name);
-      } else if (typeName.equals("boolean")) {
-        return currentRow.getBool(name);
-      } else if (typeName.equals("counter")) {
-        return currentRow.getLong(name);
-      } else if (typeName.equals("decimal")) {
-        return currentRow.getDecimal(name);
-      } else if (typeName.equals("double")) {
-        return currentRow.getDouble(name);
-      } else if (typeName.equals("float")) {
-        return currentRow.getFloat(name);
-      } else if (typeName.equals("inet")) {
-        return currentRow.getInet(name);
-      } else if (typeName.equals("int")) {
-        return currentRow.getInt(name);
-      } else if (typeName.equals("text")) {
-        return currentRow.getString(name);
-      } else if (typeName.equals("timestamp")) {
-        return new Timestamp((currentRow.getTimestamp(name)).getTime());
-      } else if (typeName.equals("uuid")) {
-        return currentRow.getUUID(name);
-      } else if (typeName.equals("timeuuid")) {
-        return currentRow.getUUID(name);
-      } else if (typeName.equals("varint")) {
-        return currentRow.getInt(name);
+      switch (typeName) {
+        case "varchar":
+        case "ascii":
+        case "text":
+          return currentRow.getString(name);
+        case "integer":
+        case "int":
+        case "varint":
+          return currentRow.getInt(name);
+        case "bigint":
+        case "counter":
+          return currentRow.getLong(name);
+        case "blob":
+          return currentRow.getBytes(name);
+        case "boolean":
+          return currentRow.getBool(name);
+        case "decimal":
+          return currentRow.getDecimal(name);
+        case "double":
+          return currentRow.getDouble(name);
+        case "float":
+          return currentRow.getFloat(name);
+        case "inet":
+          return currentRow.getInet(name);
+        case "timestamp":
+          if (currentRow == null) {
+            return null;
+          }
+          java.util.Date date = currentRow.getTimestamp(name);
+          return date == null ? null : new Timestamp(date.getTime());
+        case "uuid":
+        case "timeuuid":
+          return currentRow.getUUID(name);
+        case "smallint":
+          return currentRow.getShort(name);
       }
-
     }
 
     return null;
@@ -852,7 +886,8 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
       }
       return currentRow.getString(index - 1);
     } catch (Exception e) {
-      return getObject(index).toString();
+      Object o = getObject(index);
+      return (o == null ? null : o.toString());
     }
   }
 
@@ -871,6 +906,15 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Time getTime(int index) throws SQLException {
     checkIndex(index);
+    if (currentRow == null) {
+      return null;
+    }
+
+    if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("time")) {
+      String localTimeAsString = currentRow.getString(index - 1);
+      return localTimeAsString == null ? null : Time.valueOf(localTimeAsString);
+    }
+
     java.util.Date date = currentRow.getTimestamp(index - 1);
     if (date == null) {
       return null;
@@ -880,6 +924,15 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Time getTime(int index, Calendar calendar) throws SQLException {
     checkIndex(index);
+    if (currentRow == null) {
+      return null;
+    }
+
+    if (currentRow.getColumnDefinitions().getType(index - 1).getName().toString().equals("time")) {
+      String localTimeAsString = currentRow.getString(index - 1);
+      return localTimeAsString == null ? null : Time.valueOf(localTimeAsString);
+    }
+
     // silently ignore the Calendar argument; its a hint we do not need
     java.util.Date date = currentRow.getTimestamp(index - 1);
     if (date == null) {
@@ -890,6 +943,15 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Time getTime(String name) throws SQLException {
     checkName(name);
+    if (currentRow == null) {
+      return null;
+    }
+
+    if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("time")) {
+      String localTimeAsString = currentRow.getString(name);
+      return localTimeAsString == null ? null : Time.valueOf(localTimeAsString);
+    }
+
     java.util.Date date = currentRow.getTimestamp(name);
     if (date == null) {
       return null;
@@ -899,12 +961,21 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Time getTime(String name, Calendar calendar) throws SQLException {
     checkName(name);
+
+    if (currentRow.getColumnDefinitions().getType(name).getName().toString().equals("time")) {
+      String localTimeAsString = currentRow.getString(name);
+      return localTimeAsString == null ? null : Time.valueOf(localTimeAsString);
+    }
+
     // silently ignore the Calendar argument; its a hint we do not need
     return getTime(name);
   }
 
   public Timestamp getTimestamp(int index) throws SQLException {
     checkIndex(index);
+    if (currentRow == null) {
+      return null;
+    }
     java.util.Date date = currentRow.getTimestamp(index - 1);
     if (date == null) {
       return null;
@@ -914,6 +985,9 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Timestamp getTimestamp(int index, Calendar calendar) throws SQLException {
     checkIndex(index);
+    if (currentRow == null) {
+      return null;
+    }
     // silently ignore the Calendar argument; its a hint we do not need
     java.util.Date date = currentRow.getTimestamp(index - 1);
     if (date == null) {
@@ -924,6 +998,9 @@ class CassandraResultSet extends AbstractResultSet implements CassandraResultSet
 
   public Timestamp getTimestamp(String name) throws SQLException {
     checkName(name);
+    if (currentRow == null) {
+      return null;
+    }
     java.util.Date date = currentRow.getTimestamp(name);
     if (date == null) {
       return null;

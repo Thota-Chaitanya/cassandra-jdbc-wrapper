@@ -33,10 +33,12 @@ import com.datastax.driver.core.exceptions.DriverException;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 import com.datastax.driver.core.policies.TokenAwarePolicy;
 import com.github.adejanovski.cassandra.jdbc.codec.BigDecimalToBigintCodec;
+import com.github.adejanovski.cassandra.jdbc.codec.DateToStringCodec;
 import com.github.adejanovski.cassandra.jdbc.codec.DoubleToDecimalCodec;
 import com.github.adejanovski.cassandra.jdbc.codec.DoubleToFloatCodec;
 import com.github.adejanovski.cassandra.jdbc.codec.IntToLongCodec;
 import com.github.adejanovski.cassandra.jdbc.codec.LongToIntCodec;
+import com.github.adejanovski.cassandra.jdbc.codec.TimeToStringCodec;
 import com.github.adejanovski.cassandra.jdbc.codec.TimestampToLongCodec;
 import com.google.common.cache.LoadingCache;
 import java.math.BigDecimal;
@@ -199,6 +201,8 @@ class SessionHolder {
     codecs.add(new BigDecimalToBigintCodec(BigDecimal.class));
     codecs.add(new DoubleToDecimalCodec(Double.class));
     codecs.add(new DoubleToFloatCodec(Double.class));
+    codecs.add(new TimeToStringCodec(String.class));
+    codecs.add(new DateToStringCodec(String.class));
 
     customizedRegistry.register(codecs);
 
